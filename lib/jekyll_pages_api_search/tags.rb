@@ -1,6 +1,5 @@
 # @author Mike Bland (michael.bland@gsa.gov)
 
-require 'jekyll-assets'
 require 'liquid/template'
 
 module JekyllPagesApiSearch
@@ -9,16 +8,14 @@ module JekyllPagesApiSearch
       File.read(File.join(File.dirname(__FILE__), 'search.html'))
     end
   end
-end
 
-module JekyllPagesApiSearch
   class LoadSearchTag < Liquid::Tag
     def render(context)
       baseurl = context.registers[:site].config['baseurl']
-      r = ::Jekyll::AssetsPlugin::Renderer.new(context,
-        'vendor/requirejs/require')
-      ("<script async data-main=\"#{baseurl}/assets/js/main\" " +
-       "src=\"#{r.render_asset_path}\"></script>")
+      ("<script>SEARCH_BASEURL = '#{baseurl}';</script>\n" +
+       "<script async data-main=\"#{baseurl}/assets/js/main.min\" " +
+       "src=\"#{baseurl}/assets/js/vendor/requirejs/require.min.js\">" +
+       "</script>")
     end
   end
 end

@@ -2,7 +2,7 @@ define(['angularAMD', 'liveSearch', 'lunr'], function(angularAMD, liveSearch, lu
   var ngHub = angular.module('hubSearch', ['LiveSearch']);
 
   ngHub.factory('searchIndexPromise', ["$http", "$q", function($http, $q) {
-    return $http.get(SITE_BASEURL + '/search-index.json').then(function(response) {
+    return $http.get(SEARCH_BASEURL + '/search-index.json').then(function(response) {
       return response.data;
     });
   }]);
