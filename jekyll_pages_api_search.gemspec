@@ -18,10 +18,10 @@ Gem::Specification.new do |s|
 
   s.files         = `git ls-files -z *.md lib assets`.split("\x0")
 
-  s.add_runtime_dependency 'rake', '~> 10.0'
   s.add_runtime_dependency 'jekyll_pages_api', '~> 0.1.2' 
   s.add_runtime_dependency 'therubyracer', '~> 0.12.2' 
   s.add_runtime_dependency 'sass', '~> 3.4'
+  s.add_development_dependency 'rake', '~> 10.0'
   s.add_development_dependency 'bundler', '~> 1.7'
   s.add_development_dependency 'jekyll'
   s.add_development_dependency 'minitest'
