@@ -8,8 +8,13 @@ end
 
 desc "Run tests"
 task :default => :test
+task :test => :optimize_js
 
-task :build => :compress_js
+task :build => :compress_files
+
+def program_exists?(program)
+  system '/usr/bin/which', program, [:out,:err]=>'/dev/null'
+end
 
 def program_exists?(program)
   system '/usr/bin/which', program, [:out,:err]=>'/dev/null'
@@ -17,10 +22,7 @@ end
 
 desc "Check for Node.js and NPM packages"
 task :check_for_node do
-  which = '/usr/bin/which'
-  opts = {[:out,:err]=>'/dev/null'}
-
-  unless system(which, 'which', opts)
+  unless program_exists? 'which'
     puts [
       "Cannot automatically check for Node.js and NPM packages on this system.",
       "If Node.js is not installed, visit https://nodejs.org/.",
@@ -31,7 +33,7 @@ task :check_for_node do
     return
   end
 
-  unless system(which, 'node', opts)
+  unless program_exists? 'node'
     abort 'Please install Node.js: https://nodejs.org/'
   end
 
@@ -56,10 +58,25 @@ task :update_js_components => :check_for_node do
   abort unless system('bower-installer')
 end
 
-desc "Compress JavaScript components"
-task :compress_js => :check_for_node do
+desc "Optimize JavaScript components"
+task :optimize_js => :check_for_node do
   abort unless system('uglifyjs', '-c', '-m',
     '-o', File.join(%w(lib jekyll_pages_api_search lunr.min.js)),
     '--', File.join(%w(assets js vendor lunr.js lunr.js)))
   abort unless system('r.js', '-o', 'build.js')
+end
+
+desc "Apply gzip compression to JavaScript files"
+task :compress_files => :optimize_js do
+  unless program_exists? 'gzip'
+    puts "Cannot determine if the gzip program exists on the system; " +
+      "skipping compression."
+    return
+  end
+
+  Dir[File.join(%w(assets js ** *.min.js))].each do |f|
+    unless system 'gzip', '--best', '-c', f, :out=>"#{f}.gz" 
+      abort "compression failed for: #{f}"
+    end
+  end
 end

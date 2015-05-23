@@ -8,7 +8,7 @@ module JekyllPagesApiSearch
       assets_path = File.join('assets', 'js')
       source = File.realpath(File.join(File.dirname(__FILE__), '..', '..'))
       begin_path = source.size + File::SEPARATOR.size
-      Dir[File.join(source, assets_path, '**', '*.min.js')].each do |f|
+      Dir[File.join(source, assets_path, '**', '*.min.js*')].each do |f|
         next unless File.file? f
         f = f[begin_path..-1]
         site.static_files << ::Jekyll::StaticFile.new(

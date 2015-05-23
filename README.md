@@ -3,10 +3,11 @@
 This Ruby gem adds a [lunr.js](http://lunrjs.com) search index to a
 [Jekyll](http://jekyllrb.com/)-based web site.
 
-The search index is generated automatically via `jekyll build` or `jekyll
-serve`. The supporting JavaScript code is optimized and loads asynchronously.
-These features ensure that the preparation of the search index does not
-introduce rendering latency in the browser.
+The search index is generated and compressed automatically via `jekyll
+build` or `jekyll serve`. The supporting JavaScript code is optimized,
+compressed, and loads asynchronously. These features ensure that the
+preparation of the search index does not introduce rendering latency in the
+browser.
 
 ### Installation
 
@@ -42,6 +43,12 @@ jekyll_pages_api_search:
 Now running `jekyll build` or `jekyll serve` will produce `search-index.json`
 and `search-index.json.gz` files in the `_site` directory (or other output
 directory, as configured).
+
+If you're running [Nginx](http://nginx.org), you may want to use the
+[`gzip_static on`
+directive](http://nginx.org/en/docs/http/ngx_http_gzip_static_module.html)
+to take advantage of the gzipped versions of the search index and supporting
+JavaScript.
 
 ### Usage
 
