@@ -12,8 +12,7 @@ module JekyllPagesApiSearch
       dirname = File.dirname(__FILE__)
       search_config = site.config['jekyll_pages_api_search']
       cxt = V8::Context.new
-      cxt.load File.join(dirname, '..', '..',
-        'assets', 'js', 'vendor', 'lunr.js', 'lunr.min.js')
+      cxt.load File.join(dirname, 'lunr.min.js')
       cxt[:index_fields] = search_config['index_fields'] || {}
       cxt.eval("var corpus = #{corpus_page.content};")
       cxt.load(File.join(dirname, 'search.js'))

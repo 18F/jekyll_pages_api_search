@@ -9,6 +9,8 @@ end
 desc "Run tests"
 task :default => :test
 
+task :build => :compress_js
+
 def program_exists?(program)
   system '/usr/bin/which', program, [:out,:err]=>'/dev/null'
 end
@@ -37,6 +39,7 @@ task :check_for_node do
     'bower',
     'bower-installer',
     ['uglify-js', 'uglifyjs'],
+    ['requirejs', 'r.js'],
   ]
   programs.each do |npm|
     pkg, prog = npm
@@ -48,16 +51,15 @@ task :check_for_node do
 end
 
 desc "Update JavaScript components"
-task :update_js => :check_for_node do
+task :update_js_components => :check_for_node do
   abort unless system('bower', 'update')
   abort unless system('bower-installer')
 end
 
 desc "Compress JavaScript components"
 task :compress_js => :check_for_node do
-  Dir[File.join(File.dirname(__FILE__), 'assets', 'js', '**', '*')].each do |f|
-    next unless File.file? f and f.end_with? '.js' and not f.end_with? '.min.js'
-    outfile = "#{f[0..-('.js'.size + 1)]}.min.js"
-    abort unless system('uglifyjs', '-c', '-m', '--', f, :out=>outfile)
-  end
+  abort unless system('uglifyjs', '-c', '-m',
+    '-o', File.join(%w(lib jekyll_pages_api_search lunr.min.js)),
+    '--', File.join(%w(assets js vendor lunr.js lunr.js)))
+  abort unless system('r.js', '-o', 'build.js')
 end
