@@ -15,17 +15,21 @@ module Jekyll
     alias_method :pages_api_after_render, :after_render
     alias_method :orig_write, :write
 
+    def skip_index?
+      search_config = self.config['jekyll_pages_api_search']
+      search_config == nil || search_config['skip_index']
+    end
+
     def after_render
       pages_api_after_render
-      search_config = self.config['jekyll_pages_api_search']
-      return if search_config == nil || search_config['skip_index']
+      return if skip_index?
       self.pages << JekyllPagesApiSearch::SearchIndexBuilder.build_index(self)
       JekyllPagesApiSearch::JavascriptCopier.copy_to_site(self)
     end
 
     def write
       orig_write
-      pages_api_search_after_write
+      pages_api_search_after_write unless skip_index?
     end
 
     def pages_api_search_after_write
