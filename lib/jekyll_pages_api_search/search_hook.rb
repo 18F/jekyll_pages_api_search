@@ -37,7 +37,7 @@ module Jekyll
       raise 'Search index not found' if index == nil
       compressed = "#{index.destination self.dest}.gz"
       Zlib::GzipWriter.open(compressed, Zlib::BEST_COMPRESSION) do |gz|
-        gz.write index.content
+        gz.write index.output
       end
     end
 

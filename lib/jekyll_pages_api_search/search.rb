@@ -14,7 +14,7 @@ module JekyllPagesApiSearch
       cxt = V8::Context.new
       cxt.load File.join(dirname, 'lunr.min.js')
       cxt[:index_fields] = search_config['index_fields'] || {}
-      cxt.eval("var corpus = #{corpus_page.content};")
+      cxt.eval("var corpus = #{corpus_page.output};")
       cxt.load(File.join(dirname, 'search.js'))
 
       index_page = JekyllPagesApi::PageWithoutAFile.new(
