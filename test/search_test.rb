@@ -58,8 +58,21 @@ module JekyllPagesApiSearch
       end
     end
 
+    def get_tag(name)
+      Liquid::Template.tags[name].new( nil, nil, nil)
+    end
+
+    def test_interface_style_present
+      css_path = File.join(SiteBuilder::BUILD_DIR, 'css', 'main.css')
+      assert(File.exist?(css_path), "css/main.css does not exist")
+      File.open(css_path, 'r') do |f|
+        assert_includes(f.read, 'ul.searchresultspopup',
+          'generated files do not contain interface style code')
+      end
+    end
+
     def test_interface_tag_replaced
-      tag = Liquid::Template.tags[SearchInterfaceTag::NAME].new(nil, nil, nil)
+      tag = get_tag SearchInterfaceTag::NAME
       File.open(@index_page_path, 'r') do |f|
         assert_includes(f.read, tag.render(@context),
           'generated files do not contain interface code')
@@ -67,7 +80,7 @@ module JekyllPagesApiSearch
     end
 
     def test_load_tag_replaced
-      tag = Liquid::Template.tags[LoadSearchTag::NAME].new(nil, nil, nil)
+      tag = get_tag LoadSearchTag::NAME
       @context.registers[:site].config['baseurl'] = ''
       File.open(@index_page_path, 'r') do |f|
         assert_includes(f.read, tag.render(@context),
