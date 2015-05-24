@@ -1,15 +1,17 @@
 # @author Mike Bland (michael.bland@gsa.gov)
 
-require 'liquid/template'
+require 'liquid'
 
 module JekyllPagesApiSearch
   class SearchInterfaceTag < Liquid::Tag
+    NAME = 'jekyll_pages_api_search_interface'
     def render(context)
       File.read(File.join(File.dirname(__FILE__), 'search.html'))
     end
   end
 
   class LoadSearchTag < Liquid::Tag
+    NAME = 'jekyll_pages_api_search_load'
     def render(context)
       baseurl = context.registers[:site].config['baseurl']
       ("<script>SEARCH_BASEURL = '#{baseurl}';</script>\n" +
@@ -20,7 +22,7 @@ module JekyllPagesApiSearch
   end
 end
 
-Liquid::Template.register_tag('jekyll_pages_api_search_interface',
+Liquid::Template.register_tag(JekyllPagesApiSearch::SearchInterfaceTag::NAME,
   JekyllPagesApiSearch::SearchInterfaceTag)
-Liquid::Template.register_tag('jekyll_pages_api_search_load',
+Liquid::Template.register_tag(JekyllPagesApiSearch::LoadSearchTag::NAME,
   JekyllPagesApiSearch::LoadSearchTag)
