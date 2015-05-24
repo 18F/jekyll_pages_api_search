@@ -19,9 +19,7 @@ module JekyllPagesApiSearch
 
       index_page = JekyllPagesApi::PageWithoutAFile.new(
         site, site.source, '', 'search-index.json')
-      index_page.content = cxt[:result]
-      index_page.data['layout'] = nil
-      index_page.render(Hash.new, site.site_payload)
+      index_page.output = cxt[:result]
       return index_page
     end
 
