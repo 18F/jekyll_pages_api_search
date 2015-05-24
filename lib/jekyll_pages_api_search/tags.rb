@@ -5,24 +5,29 @@ require 'liquid'
 module JekyllPagesApiSearch
   class SearchInterfaceTag < Liquid::Tag
     NAME = 'jekyll_pages_api_search_interface'
+    Liquid::Template.register_tag(NAME, self)
+
+    def initialize(tag_name, text, tokens)
+      super
+      @code = File.read(File.join(File.dirname(__FILE__), 'search.html'))
+    end
+
     def render(context)
-      File.read(File.join(File.dirname(__FILE__), 'search.html'))
+      @code
     end
   end
 
   class LoadSearchTag < Liquid::Tag
     NAME = 'jekyll_pages_api_search_load'
+    Liquid::Template.register_tag(NAME, self)
+
     def render(context)
+      return @code if @code
       baseurl = context.registers[:site].config['baseurl']
-      ("<script>SEARCH_BASEURL = '#{baseurl}';</script>\n" +
+      @code = ("<script>SEARCH_BASEURL = '#{baseurl}';</script>\n" +
        "<script async data-main=\"#{baseurl}/assets/js/main.min\" " +
        "src=\"#{baseurl}/assets/js/vendor/requirejs/require.min.js\">" +
        "</script>")
     end
   end
 end
-
-Liquid::Template.register_tag(JekyllPagesApiSearch::SearchInterfaceTag::NAME,
-  JekyllPagesApiSearch::SearchInterfaceTag)
-Liquid::Template.register_tag(JekyllPagesApiSearch::LoadSearchTag::NAME,
-  JekyllPagesApiSearch::LoadSearchTag)
