@@ -2,6 +2,7 @@
   "name": "jekyll_pages_api_search",
   "private": true,
   "dependencies": {
+    "jquery": "~2.1",
     "angular": "~1.2",
     "lunr.js": "~0.5.7",
     "angular-livesearch": "https://github.com/mauriciogentile/angular-livesearch.git",
