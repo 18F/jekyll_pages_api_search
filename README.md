@@ -99,6 +99,26 @@ Building the gem requires [Node.js](https://nodejs.org/) and several Node
 packages. The `Rakefile` will prompt you to install Node.js and any packages
 that are missing from your system when running `bundle exec rake build`.
 
+* Run `bundle` to install any necessary gems.
+* Run `bundle exec rake -T` to get a list of build commands and descriptions.
+* Run `bundle exec rake update_js_components` download and install the latest
+  JavaScript components listed in `bower.json`.
+* Run `bundle exec rake test` to run the tests.
+* Run `bundle exec rake build` to ensure the entire gem can build.
+* Commit an update to bump the version number of
+  `lib/jekyll_pages_api_search/version.rb` before running `bundle exec rake
+  release`.
+
+While developing this gem, add this to the Gemfile of any project using the
+gem to try out your changes (presuming the project's working directory is a
+sibling of the gem's working directory):
+
+```ruby
+group :jekyll_plugins do
+  gem 'jekyll_pages_api_search', :path => '../jekyll_pages_api_search'
+end
+```
+
 ### Contributing
 
 1. Fork the repo (or just clone it if you're an 18F team member)
