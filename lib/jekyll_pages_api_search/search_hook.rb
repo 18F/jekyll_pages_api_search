@@ -1,5 +1,7 @@
 # @author Mike Bland (michael.bland@gsa.gov)
 
+require_relative 'js_copier'
+
 require 'jekyll/site'
 require 'jekyll_pages_api'
 
@@ -16,6 +18,7 @@ module Jekyll
       search_config = self.config['jekyll_pages_api_search']
       return if search_config == nil || search_config['skip_index']
       self.pages << JekyllPagesApiSearch::SearchIndexBuilder.build_index(self)
+      JekyllPagesApiSearch::JavascriptCopier.copy_to_site(self)
     end
   end
 end
