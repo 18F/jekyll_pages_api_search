@@ -17,7 +17,7 @@ module Jekyll
 
     def skip_index?
       search_config = self.config['jekyll_pages_api_search']
-      search_config == nil || search_config['skip_index']
+      search_config.nil? || search_config['skip_index']
     end
 
     def after_render
@@ -33,16 +33,12 @@ module Jekyll
     end
 
     def pages_api_search_after_write
-      index = find_search_index_page
-      raise 'Search index not found' if index == nil
+      index = pages.find {|p| p.name == 'search-index.json'}
+      raise 'Search index not found' if index.nil?
       compressed = "#{index.destination self.dest}.gz"
       Zlib::GzipWriter.open(compressed, Zlib::BEST_COMPRESSION) do |gz|
         gz.write index.output
       end
-    end
-
-    def find_search_index_page
-      pages.each {|p| return p if p.name == 'search-index.json'}
     end
   end
 end

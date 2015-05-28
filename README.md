@@ -3,11 +3,10 @@
 This Ruby gem adds a [lunr.js](http://lunrjs.com) search index to a
 [Jekyll](http://jekyllrb.com/)-based web site.
 
-The search index is generated and compressed automatically via `jekyll
-build` or `jekyll serve`. The supporting JavaScript code is optimized,
-compressed, and loads asynchronously. These features ensure that the
-preparation of the search index does not introduce rendering latency in the
-browser.
+The search index is generated and compressed automatically via `jekyll build`
+or `jekyll serve`. The supporting JavaScript code is optimized, compressed,
+and loads asynchronously. These features ensure that the preparation of the
+search index does not introduce rendering latency in the browser.
 
 ### Installation
 
