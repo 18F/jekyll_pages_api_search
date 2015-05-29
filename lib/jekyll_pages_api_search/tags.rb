@@ -21,7 +21,7 @@ module JekyllPagesApiSearch
       return @code if @code
       baseurl = context.registers[:site].config['baseurl']
       @code = ("<script>SEARCH_BASEURL = '#{baseurl}';</script>\n" +
-       "<script async src=\"#{baseurl}/assets/js/search-main.min.js\">" +
+       "<script async src=\"#{baseurl}/assets/js/search-bundle.js\">" +
        "</script>")
     end
   end
