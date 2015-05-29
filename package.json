@@ -10,7 +10,6 @@
     "browserify": "10.x.x",
     "browserify-shim": "3.x.x",
     "debowerify": "1.x.x",
-    "deamdify": "0.x.x",
     "uglifyify": "3.x.x"
   },
   "scripts": {

@@ -82,15 +82,15 @@ Alternately, you can inspect the code of this Gem (all paths relative to
 ### Under the hood
 
 This plugin depends on [jQuery](https://jquery.com/),
-[AngularJS](https://angularjs.org/), [RequireJS](http://requirejs.org/),
-[angularAMD](https://github.com/marcoslin/angularAMD), and
+[AngularJS](https://angularjs.org/), and
 [angular-livesearch](https://github.com/mauriciogentile/angular-livesearch).
 
 All of these components are bundled together with `assets/js/search.js` into
-`assets/js/search-main.min.js` using the RequireJS optimizer. If you already
-use some of these components, you may wish to fetch the `assets/js/search.js`
-file directly from this repository and use `assets/js/search-main.js` as a
-guide to update or create your own RequireJS configuration.
+`assets/js/search-bundle.js` using [Browserify](http://browserify.org/). If
+you already use some of these components, you may wish to fetch the
+`assets/js/search.js` file directly from this repository and use
+`package.json` and `bower.json` as a guide to update or create your own
+Browserify configuration.
 
 ### Developing
 
