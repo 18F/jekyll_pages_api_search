@@ -3,10 +3,10 @@
 This Ruby gem adds a [lunr.js](http://lunrjs.com) search index to a
 [Jekyll](http://jekyllrb.com/)-based web site.
 
-The search index is generated automatically via `jekyll build` or `jekyll
-serve`. The supporting JavaScript code is optimized and loads asynchronously.
-These features ensure that the preparation of the search index does not
-introduce rendering latency in the browser.
+The search index is generated and compressed automatically via `jekyll build`
+or `jekyll serve`. The supporting JavaScript code is optimized, compressed,
+and loads asynchronously. These features ensure that the preparation of the
+search index does not introduce rendering latency in the browser.
 
 ### Installation
 
@@ -43,6 +43,12 @@ Now running `jekyll build` or `jekyll serve` will produce `search-index.json`
 and `search-index.json.gz` files in the `_site` directory (or other output
 directory, as configured).
 
+If you're running [Nginx](http://nginx.org), you may want to use the
+[`gzip_static on`
+directive](http://nginx.org/en/docs/http/ngx_http_gzip_static_module.html)
+to take advantage of the gzipped versions of the search index and supporting
+JavaScript.
+
 ### Usage
 
 To add the index to your pages, insert the following tags in your `_layouts`
@@ -76,21 +82,41 @@ Alternately, you can inspect the code of this Gem (all paths relative to
 ### Under the hood
 
 This plugin depends on [jQuery](https://jquery.com/),
-[AngularJS](https://angularjs.org/), [RequireJS](http://requirejs.org/),
-[angularAMD](https://github.com/marcoslin/angularAMD), and
+[AngularJS](https://angularjs.org/), and
 [angular-livesearch](https://github.com/mauriciogentile/angular-livesearch).
 
 All of these components are bundled together with `assets/js/search.js` into
-`assets/js/search-main.min.js` using the RequireJS optimizer. If you already
-use some of these components, you may wish to fetch the `assets/js/search.js`
-file directly from this repository and use `assets/js/search-main.js` as a
-guide to update or create your own RequireJS configuration.
+`assets/js/search-bundle.js` using [Browserify](http://browserify.org/). If
+you already use some of these components, you may wish to fetch the
+`assets/js/search.js` file directly from this repository and use
+`package.json` and `bower.json` as a guide to update or create your own
+Browserify configuration.
 
 ### Developing
 
 Building the gem requires [Node.js](https://nodejs.org/) and several Node
 packages. The `Rakefile` will prompt you to install Node.js and any packages
 that are missing from your system when running `bundle exec rake build`.
+
+* Run `bundle` to install any necessary gems.
+* Run `bundle exec rake -T` to get a list of build commands and descriptions.
+* Run `bundle exec rake update_js_components` download and install the latest
+  JavaScript components listed in `bower.json`.
+* Run `bundle exec rake test` to run the tests.
+* Run `bundle exec rake build` to ensure the entire gem can build.
+* Commit an update to bump the version number of
+  `lib/jekyll_pages_api_search/version.rb` before running `bundle exec rake
+  release`.
+
+While developing this gem, add this to the Gemfile of any project using the
+gem to try out your changes (presuming the project's working directory is a
+sibling of the gem's working directory):
+
+```ruby
+group :jekyll_plugins do
+  gem 'jekyll_pages_api_search', :path => '../jekyll_pages_api_search'
+end
+```
 
 ### Contributing
 

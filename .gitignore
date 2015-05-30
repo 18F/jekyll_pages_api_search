@@ -34,5 +34,11 @@ Gemfile.lock
 # unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
 .rvmrc
 
+# Development artifacts
 bower_components
 .sass-cache
+node_modules
+
+# Build artifacts
+lib/jekyll_pages_api_search/lunr.min.js
+assets/js/search-bundle.js*
