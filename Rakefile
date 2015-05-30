@@ -45,9 +45,6 @@ file LIB_LUNR_TARGET => LIB_LUNR_SOURCE do
   FileUtils.cp LIB_LUNR_SOURCE, LIB_LUNR_TARGET
 end
 
-# The following parses the build.js used by the RequireJS package's r.js
-# optimization tool. The `mainConfigFile` member from that file is parsed to
-# discover all of the JavaScript files that the `out` member depends on.
 # TODO(mbland): Extract this and other bits from this Rakefile into a gem.
 cxt = V8::Context.new
 basedir = File.dirname(__FILE__)
