@@ -1,19 +1,18 @@
 {
   "name": "jekyll_pages_api_search",
-  "version": "0.0.0",
+  "version": "0.1.1",
   "description": "Adds lunr.js search to Jekyll sites using jekyll_pages_api",
   "homepage": "https://github.com/18F/jekyll_pages_api_search",
-  "bugs": "https://github.com/18F/jekyll_pages_api_search/issues",
+  "bugs": {
+    "url": "https://github.com/18F/jekyll_pages_api_search/issues"
+  },
   "main": "assets/js/search.js",
   "devDependencies": {
     "bower": "1.x.x",
     "browserify": "10.x.x",
-    "browserify-shim": "3.x.x",
-    "debowerify": "1.x.x",
     "uglifyify": "3.x.x"
   },
-  "scripts": {
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git@github.com:18F/jekyll_pages_api_search.git"
@@ -24,16 +23,14 @@
     "search",
     "18F"
   ],
-  "browserify": {
-    "transform": [
-      "debowerify",
-      "browserify-shim"
-    ]
-  },
-  "browserify-shim": {
-    "bower_components/angular/angular.js": "angular"
-  },
   "author": "Mike Bland <michael.bland@gsa.gov> (https://18f.gsa.gov/)",
   "license": "CC0-1.0",
-  "readmeFilename": "README.md"
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "angular": "1.3.x",
+    "lunr": "^0.5.9",
+    "jquery": "^2.1.4"
+  }
 }

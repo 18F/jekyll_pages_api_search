@@ -1,8 +1,8 @@
 'use strict';
 
-var angular = require('angular/angular');
-var lunr = require('lunr.js/lunr');
-var _livesearch = require('angular-livesearch/liveSearch');
+var angular = require('angular');
+var lunr = require('lunr');
+var _livesearch = require('../../bower_components/angular-livesearch/liveSearch');
 var ngHub = angular.module('hubSearch', ['LiveSearch']);
 
 ngHub.factory('searchIndexPromise', ["$http", "$q", function($http, $q) {

@@ -39,7 +39,7 @@ task :update_js_components => :check_for_node do
 end
 
 LIB_LUNR_TARGET = File.join %w(lib jekyll_pages_api_search lunr.min.js)
-LIB_LUNR_SOURCE = File.join %w(bower_components lunr.js lunr.min.js)
+LIB_LUNR_SOURCE = File.join %w(node_modules lunr lunr.min.js)
 
 file LIB_LUNR_TARGET => LIB_LUNR_SOURCE do
   FileUtils.cp LIB_LUNR_SOURCE, LIB_LUNR_TARGET
