@@ -81,3 +81,8 @@ task :build => [
   :test,
   search_bundle_gz,
 ]
+
+task :ci_build => [
+  :update_js_components,
+  :test,
+]
