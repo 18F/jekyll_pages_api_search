@@ -1,7 +1,0 @@
-{
-  "name": "jekyll_pages_api_search",
-  "private": true,
-  "dependencies": {
-    "angular-livesearch": "https://github.com/mauriciogentile/angular-livesearch.git"
-  }
-}

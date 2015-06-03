@@ -8,8 +8,8 @@
   },
   "main": "assets/js/search.js",
   "devDependencies": {
-    "bower": "1.x.x",
     "browserify": "10.x.x",
+    "napa": "^1.2.0",
     "uglifyify": "3.x.x"
   },
   "scripts": {},
@@ -32,5 +32,9 @@
     "angular": "1.3.x",
     "lunr": "^0.5.9",
     "jquery": "^2.1.4"
+  },
+  "scripts": {
+    "install": "napa mauriciogentile/angular-livesearch",
+    "update": "napa mauriciogentile/angular-livesearch"
   }
 }

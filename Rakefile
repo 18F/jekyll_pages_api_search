@@ -32,10 +32,14 @@ task :check_for_node do
   end
 end
 
+desc "Install JavaScript components"
+task :install_js_components => :check_for_node do
+  abort unless system 'npm', 'install'
+end
+
 desc "Update JavaScript components"
 task :update_js_components => :check_for_node do
   abort unless system 'npm', 'update'
-  abort unless system 'bower', 'update'
 end
 
 LIB_LUNR_TARGET = File.join %w(lib jekyll_pages_api_search lunr.min.js)
@@ -83,6 +87,6 @@ task :build => [
 ]
 
 task :ci_build => [
-  :update_js_components,
+  :install_js_components,
   :test,
 ]

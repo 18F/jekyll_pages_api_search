@@ -2,7 +2,7 @@
 
 var angular = require('angular');
 var lunr = require('lunr');
-var _livesearch = require('../../bower_components/angular-livesearch/liveSearch');
+var _livesearch = require('angular-livesearch/liveSearch');
 var ngHub = angular.module('hubSearch', ['LiveSearch']);
 
 ngHub.factory('searchIndexPromise', ["$http", "$q", function($http, $q) {
