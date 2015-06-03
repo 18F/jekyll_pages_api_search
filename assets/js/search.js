@@ -1,7 +1,7 @@
 'use strict';
 
-var angular = require('angular/angular');
-var lunr = require('lunr.js/lunr');
+var angular = require('angular');
+var lunr = require('lunr');
 var _livesearch = require('angular-livesearch/liveSearch');
 var ngHub = angular.module('hubSearch', ['LiveSearch']);
 
