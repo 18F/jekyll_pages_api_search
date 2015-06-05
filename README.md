@@ -63,6 +63,9 @@ and `_includes` files as you see fit:
 You can also add `@import "jekyll_pages_api_search";` to one of your [Sass
 assets](http://jekyllrb.com/docs/assets/) to use the default interface style.
 
+Add `skip_index: true` to the front matter of any documents you would like to
+exclude from the index (e.g. indexes that contain summaries of other documents).
+
 ### Customization
 
 If you prefer to craft your own versions of these tags and styles, you can

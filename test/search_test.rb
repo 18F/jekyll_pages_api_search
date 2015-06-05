@@ -58,8 +58,17 @@ module JekyllPagesApiSearch
       end
     end
 
+    def test_skip_index_page_not_included
+      index_file = File.join(SiteBuilder::BUILD_DIR, 'search-index.json')
+
+      File.open(index_file, 'r') do |f|
+        search_index = JSON.parse f.read, :max_nesting => 200
+        assert_nil search_index['url_to_doc']['/about/']
+      end
+    end
+
     def get_tag(name)
-      Liquid::Template.tags[name].new( nil, nil, nil)
+      Liquid::Template.tags[name].new nil, nil, nil
     end
 
     def test_interface_style_present
