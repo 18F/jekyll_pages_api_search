@@ -1,0 +1,66 @@
+#! /usr/bin/env ruby
+# Author: Mike Bland <michael.bland@gsa.gov>
+# Date:   2015-06-21
+
+# Monkeypatch to avoid "undefine method `render` error.
+module Jekyll
+  class Site
+    def render
+    end
+  end
+end
+
+require_relative '../lib/jekyll_pages_api_search/search'
+require 'fileutils'
+require 'jekyll_pages_api'
+require 'safe_yaml'
+require 'zlib'
+
+USAGE="Usage: #{$0} basedir basedir/config.yml basedir/_site/api/v1/pages.json"
+
+unless ARGV.size == 3 && ARGV.all? {|f| File.exist? f}
+  $stderr.puts USAGE
+  exit 1
+end
+
+module JekyllPagesApiSearch
+  class Site
+    attr_reader :source, :config, :pages
+
+    def initialize(basedir, config, pages_json_path)
+      @source = basedir
+      @config = SafeYAML.load_file(config, :safe => true)
+      @pages = []
+      add_pages_json pages_json_path
+    end
+
+    def add_pages_json(pages_json_path)
+      basename = File.basename pages_json_path
+      rel_dir = File.dirname pages_json_path
+      rel_dir = rel_dir[self.source.size..rel_dir.size]
+      page = ::JekyllPagesApi::PageWithoutAFile.new(
+        self, self.source, rel_dir, basename)
+      page.output = File.read(pages_json_path)
+      self.pages << page
+    end
+  end
+end
+
+site = ::JekyllPagesApiSearch::Site.new ARGV[0], ARGV[1], ARGV[2]
+index = ::JekyllPagesApiSearch::SearchIndexBuilder.build_index site
+outfile = File.join site.source, index.name
+File.open(outfile, 'w') {|f| f << index.output.to_s}
+Zlib::GzipWriter.open("#{outfile}.gz", Zlib::BEST_COMPRESSION) do |gz|
+  gz.write index.output
+end
+
+assets_path = File.join 'assets', 'js'
+target_path = File.join site.source, assets_path
+FileUtils.mkdir_p target_path
+source = File.join File.dirname(__FILE__), '..'
+begin_path = source.size + File::SEPARATOR.size
+Dir[File.join(source, assets_path, 'search-bundle.js*')].each do |f|
+  next unless File.file? f
+  f = f[begin_path..-1]
+  FileUtils.cp f, target_path
+end

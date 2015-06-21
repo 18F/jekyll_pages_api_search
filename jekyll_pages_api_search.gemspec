@@ -16,11 +16,12 @@ Gem::Specification.new do |s|
   s.homepage      = 'https://github.com/18F/jekyll_pages_api_search'
   s.license       = 'CC0'
 
-  s.files         = `git ls-files -z *.md lib assets`.split("\x0") + [
+  s.files         = `git ls-files -z *.md bin lib assets`.split("\x0") + [
     'assets/js/search-bundle.js',
     'assets/js/search-bundle.js.gz',
     'lib/jekyll_pages_api_search/lunr.min.js',
   ]
+  s.executables   = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
 
   s.add_runtime_dependency 'jekyll_pages_api', '~> 0.1.4'
   s.add_runtime_dependency 'therubyracer', '~> 0.12.2'
