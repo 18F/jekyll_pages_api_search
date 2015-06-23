@@ -2,8 +2,7 @@
 # Author: Mike Bland <michael.bland@gsa.gov>
 # Date:   2015-06-21
 
-require_relative '../lib/jekyll_pages_api_search/search'
-require_relative '../lib/jekyll_pages_api_search/site'
+require_relative '../lib/jekyll_pages_api_search'
 require 'fileutils'
 require 'jekyll_pages_api'
 require 'zlib'
@@ -48,19 +47,14 @@ baseurl, config, pages_json = ARGV
 site = ::JekyllPagesApiSearch::Site.new baseurl, config
 site.load_pages_json pages_json
 index = ::JekyllPagesApiSearch::SearchIndexBuilder.build_index site
+
 outfile = File.join site.source, index.name
 File.open(outfile, 'w') {|f| f << index.output.to_s}
 Zlib::GzipWriter.open("#{outfile}.gz", Zlib::BEST_COMPRESSION) do |gz|
   gz.write index.output
 end
 
-assets_path = File.join 'assets', 'js'
-target_path = File.join site.source, assets_path
+JavascriptCopier = ::JekyllPagesApiSearch::JavascriptCopier
+target_path = File.join site.source, JavascriptCopier::ASSETS_DIR
 FileUtils.mkdir_p target_path
-source = File.join File.dirname(__FILE__), '..'
-begin_path = source.size + File::SEPARATOR.size
-Dir[File.join(source, assets_path, 'search-bundle.js*')].each do |f|
-  next unless File.file? f
-  f = f[begin_path..-1]
-  FileUtils.cp f, target_path
-end
+JavascriptCopier::search_bundle_paths {|f| FileUtils.cp f, target_path}
