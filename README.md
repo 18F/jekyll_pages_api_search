@@ -82,6 +82,13 @@ Alternately, you can inspect the code of this Gem (all paths relative to
 - `@import "jekyll_pages_api_search";`: includes
   `sass/jekyll_pages_api_search.scss`
 
+### Running standalone
+
+If you wish to generate a `search-index.json` file (and optionaly a
+`pages.json` file) when using a site generation tool other than Jekyll, you
+can run the `jekyll_pages_api_search` executable as a post-generation step.
+Run `jekyll_pages_api -h` for instructions.
+
 ### Under the hood
 
 This plugin depends on [jQuery](https://jquery.com/),
