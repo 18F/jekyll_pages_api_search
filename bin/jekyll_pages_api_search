@@ -7,8 +7,7 @@ require 'fileutils'
 require 'jekyll_pages_api'
 require 'zlib'
 
-JPAS = ::JekyllPagesApiSearch
-ASSETS_DIR = JPAS::JavascriptCopier::ASSETS_DIR
+ASSETS_DIR = ::JekyllPagesApiSearch::JavascriptCopier::ASSETS_DIR
 
 USAGE=<<END_USAGE
 #{$0}: generate a lunr.js index from Jekyll Pages API output
@@ -56,26 +55,22 @@ if ARGV.length == 1 && ARGV[0] == '-h'
   exit
 end
 
-unless [3, 5, 6].include? ARGV.length
-  $stderr.puts "Wrong number of arguments: #{ARGV.length}"
-  $stderr.puts USAGE
-  exit 1
-end
-
-# Handle --assets case
 if ARGV.length == 5
   if ARGV[0] == '--assets'
     baseURL, scss, html, js = ARGV[1..ARGV.size]
-    [scss, html, js].each {|i| FileUtils.mkdir_p File.dirname(i)}
-    FileUtils.cp JPAS::Sass::INTERFACE_FILE, scss
-    File.open(html, 'w') {|f| f << JPAS::SearchInterfaceTag::CODE}
-    File.open(js, 'w') {|f| f << JPAS::LoadSearchTag::generate_script(baseURL)}
+    ::JekyllPagesApiSearch::Assets::write_to_files baseURL, scss, html, js
     exit
   else
     $stderr.puts "Wrong number of arguments: #{ARGV.length}"
     $stderr.puts USAGE
    exit 1
- end
+  end
+end
+
+unless [3, 6].include? ARGV.length
+  $stderr.puts "Wrong number of arguments: #{ARGV.length}"
+  $stderr.puts USAGE
+  exit 1
 end
 
 basedir, config, pages_json, baseURL, title_prefix, body_element_tag = ARGV
@@ -90,28 +85,5 @@ if ARGV.length == 3 && !File.exist?(pages_json)
   exit 1
 end
 
-site = JPAS::Site.new basedir, config
-
-# Generate pages.json if it doesn't already exist.
-if baseURL.nil?
-  site.load_pages_json pages_json
-else
-  site.pages << ::JekyllPagesApi::Generator.new(
-    ::JekyllPagesApi::GeneratedSite.new(
-      baseURL, basedir, title_prefix, body_element_tag)).page
-end
-
-# Build the index; output pages_json if necessary; gzip outputs.
-index = JPAS::SearchIndexBuilder.build_index site
-index_outfile = File.join site.source, index.name
-output = { index_outfile => index.output.to_s }
-output[pages_json] = site.pages.first.output unless File.exist? pages_json
-output.each do |outfile, content|
-  File.open(outfile, 'w') {|f| f << content}
-  JPAS::Compressor::gzip_in_memory_content outfile => content
-end
-
-# Copy the search bundle files.
-target_path = File.join site.source, ASSETS_DIR
-FileUtils.mkdir_p target_path
-JPAS::JavascriptCopier::search_bundle_paths {|f| FileUtils.cp f, target_path}
+::JekyllPagesApiSearch::Standalone.generate_index(basedir, config, pages_json,
+  baseURL, title_prefix, body_element_tag)

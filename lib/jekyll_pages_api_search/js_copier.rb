@@ -1,5 +1,6 @@
 # @author Mike Bland (michael.bland@gsa.gov)
 
+require 'fileutils'
 require 'jekyll/static_file'
 
 module JekyllPagesApiSearch
@@ -14,6 +15,14 @@ module JekyllPagesApiSearch
           site, SOURCE, File.dirname(f), File.basename(f))
       end
     end
+
+    def self.copy_to_basedir(basedir)
+      target_path = File.join basedir, ASSETS_DIR
+      FileUtils.mkdir_p target_path
+      self.search_bundle_paths {|f| FileUtils.cp f, target_path}
+    end
+
+    private
 
     def self.search_bundle_paths
       Dir.glob(File.join(SOURCE, ASSETS_DIR, 'search-bundle.js*')) do |f|
