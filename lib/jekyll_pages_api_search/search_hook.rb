@@ -1,5 +1,6 @@
 # @author Mike Bland (michael.bland@gsa.gov)
 
+require_relative 'compressor'
 require_relative 'js_copier'
 
 require 'jekyll/site'
@@ -35,10 +36,8 @@ module Jekyll
     def pages_api_search_after_write
       index = pages.find {|p| p.name == 'search-index.json'}
       raise 'Search index not found' if index.nil?
-      compressed = "#{index.destination self.dest}.gz"
-      Zlib::GzipWriter.open(compressed, Zlib::BEST_COMPRESSION) do |gz|
-        gz.write index.output
-      end
+      JekyllPagesApiSearch::Compressor.gzip_in_memory_content(
+        "#{index.destination self.dest}" => index.output)
     end
   end
 end
