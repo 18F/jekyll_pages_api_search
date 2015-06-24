@@ -5,6 +5,8 @@ require 'v8'
 
 module JekyllPagesApiSearch
   class SearchIndexBuilder
+    INDEX_FILE = 'search-index.json'
+
     def self.build_index(site)
       corpus_page = find_corpus_page(site.pages)
       raise 'Pages API corpus not found' if corpus_page == nil
@@ -18,7 +20,7 @@ module JekyllPagesApiSearch
       cxt.load(File.join(dirname, 'search.js'))
 
       index_page = JekyllPagesApi::PageWithoutAFile.new(
-        site, site.source, '', 'search-index.json')
+        site, site.source, '', INDEX_FILE)
       index_page.output = cxt[:result]
       return index_page
     end

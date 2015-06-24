@@ -20,9 +20,13 @@ module JekyllPagesApiSearch
     def render(context)
       return @code if @code
       baseurl = context.registers[:site].config['baseurl']
-      @code = ("<script>SEARCH_BASEURL = '#{baseurl}';</script>\n" +
-       "<script async src=\"#{baseurl}/assets/js/search-bundle.js\">" +
-       "</script>")
+      @code = LoadSearchTag.generate_script baseurl
+    end
+
+    def self.generate_script(baseurl)
+      "<script>SEARCH_BASEURL = '#{baseurl}';</script>\n" +
+        "<script async src=\"#{baseurl}/assets/js/search-bundle.js\">" +
+        "</script>"
     end
   end
 end

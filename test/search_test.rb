@@ -31,7 +31,8 @@ module JekyllPagesApiSearch
     end
 
     def test_index_built
-      index_file = File.join(SiteBuilder::BUILD_DIR, 'search-index.json')
+      index_file = File.join(SiteBuilder::BUILD_DIR,
+        SearchIndexBuilder::INDEX_FILE)
       assert(File.exist?(index_file), "Serialized search index doesn't exist")
 
       File.open(index_file, 'r') do |f|
@@ -59,7 +60,8 @@ module JekyllPagesApiSearch
     end
 
     def test_skip_index_page_not_included
-      index_file = File.join(SiteBuilder::BUILD_DIR, 'search-index.json')
+      index_file = File.join(SiteBuilder::BUILD_DIR,
+        SearchIndexBuilder::INDEX_FILE)
 
       File.open(index_file, 'r') do |f|
         search_index = JSON.parse f.read, :max_nesting => 200

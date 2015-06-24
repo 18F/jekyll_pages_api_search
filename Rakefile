@@ -55,8 +55,8 @@ basedir = File.dirname(__FILE__)
 package_json = File.read File.join(basedir, 'package.json')
 cxt.eval "var package = #{package_json};"
 main_js = cxt[:package].main
-search_bundle = File.join 'assets', 'js', 'search-bundle.js'
 
+search_bundle = File.join 'assets', 'js', 'search-bundle.js'
 file search_bundle => main_js do
   unless system 'browserify', '-g', 'uglifyify', main_js, :out=>search_bundle
     abort "browserify failed"
@@ -64,7 +64,6 @@ file search_bundle => main_js do
 end
 
 search_bundle_gz = "#{search_bundle}.gz"
-
 file search_bundle_gz => search_bundle do
   unless program_exists? 'gzip'
     puts "Cannot determine if the gzip program exists on the system; " +
@@ -76,17 +75,16 @@ file search_bundle_gz => search_bundle do
   end
 end
 
-task :build_js => [:check_for_node, LIB_LUNR_TARGET, search_bundle] do
+ARTIFACTS = [LIB_LUNR_TARGET, search_bundle, search_bundle_gz]
+
+task :build_js => [ :check_for_node ].concat(ARTIFACTS) do
+  ARTIFACTS.each do |artifact|
+    unless File.exist?(artifact) && File.stat(artifact).size != 0
+      abort "#{artifact} missing or empty"
+    end
+  end
 end
 
-task :test => :build_js
-
-task :build => [
-  :test,
-  search_bundle_gz,
-]
-
-task :ci_build => [
-  :install_js_components,
-  :test,
-]
+task :test => [:build_js]
+task :build => [:test]
+task :ci_build => [:install_js_components, :test]

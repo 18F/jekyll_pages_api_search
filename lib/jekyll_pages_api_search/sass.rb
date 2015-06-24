@@ -2,4 +2,11 @@
 
 require 'sass'
 
-Sass.load_paths << File.join(File.dirname(__FILE__), 'sass')
+module JekyllPagesApiSearch
+  class Sass
+    DIR = File.join File.dirname(__FILE__), 'sass'
+    INTERFACE_FILE = File.join DIR, 'jekyll_pages_api_search.scss'
+  end
+end
+
+Sass.load_paths << ::JekyllPagesApiSearch::Sass::DIR
