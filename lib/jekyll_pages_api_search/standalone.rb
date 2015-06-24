@@ -2,6 +2,7 @@
 
 require_relative 'compressor'
 require_relative 'site'
+require 'fileutils'
 require 'jekyll_pages_api'
 
 module JekyllPagesApiSearch
@@ -25,9 +26,10 @@ module JekyllPagesApiSearch
       output = { index_outfile => index.output.to_s }
       output[pages_json] = site.pages.first.output unless File.exist? pages_json
       output.each do |outfile, content|
+        FileUtils.mkdir_p File.dirname(outfile)
         File.open(outfile, 'w') {|f| f << content}
-        Compressor::gzip_in_memory_content outfile => content
       end
+      Compressor::gzip_in_memory_content output
       JavascriptCopier::copy_to_basedir site.source
     end
   end
