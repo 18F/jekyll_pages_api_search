@@ -1,96 +1,119 @@
+/* jshint node: true */
+
 'use strict';
 
-var angular = require('angular');
 var lunr = require('lunr');
-var _livesearch = require('angular-livesearch/liveSearch');
-var ngHub = angular.module('hubSearch', ['LiveSearch']);
 
-ngHub.factory('searchIndexPromise', ["$http", "$q", function($http, $q) {
-  return $http.get(SEARCH_BASEURL + '/search-index.json').then(function(response) {
-    return response.data;
+function fetchIndex(baseUrl) {
+  return new Promise(function(resolve, reject) {
+    var req = new XMLHttpRequest(),
+        indexUrl = baseUrl + '/search-index.json';
+
+    req.addEventListener('load', function() {
+      var rawJson;
+
+      try {
+        rawJson = JSON.parse(this.responseText);
+        resolve({
+          url_to_doc: rawJson.url_to_doc,
+          index: lunr.Index.load(rawJson.index)
+        });
+      } catch (err) {
+        reject(new Error('failed to parse ' + indexUrl));
+      }
+    });
+    req.open('GET', indexUrl);
+    req.send();
   });
-}]);
+}
 
-ngHub.factory('searchIndex', ["searchIndexPromise", function(searchIndexPromise) {
-  var container = {};
-  searchIndexPromise.then(function(index_json) {
-    container.url_to_doc = index_json.url_to_doc;
-    container.index = lunr.Index.load(index_json.index);
-  });
-  return container;
-}]);
+function makeSearchCallback(inputElement, searchIndex) {
+  return function() {
+    var term = inputElement.value.trim(),
+        results;
 
-ngHub.factory('pagesSearch', ["searchIndex", function(searchIndex) {
-  return function(term) {
-    var results = searchIndex.index.search(term);
-    angular.forEach(results, function(result) {
+    if (term.length <= 3) {
+      return;
+    }
+    console.log('term is:', term);
+
+    results = searchIndex.index.search(term);
+    results.forEach(function(result) {
       var page = searchIndex.url_to_doc[result.ref];
       result.page = page;
-      // make top-level attribute available for LiveSearch
       result.displayTitle = page.title || page.url;
     });
+    console.log('results are:', results);
     return results;
   };
-}]);
+}
 
 // based on https://github.com/angular/angular.js/blob/54ddca537/docs/app/src/search.js#L198-L206
-ngHub.factory('searchUi', ["$document", function($document) {
+function SearchUi(doc, inputElement) {
   var isForwardSlash = function(keyCode) {
     return keyCode === 191;
   };
 
   var isInput = function(el) {
-    var tagName = el.tagName.toLowerCase();
-    return tagName === 'input';
+    return el.tagName.toLowerCase() === 'input';
   };
 
   var giveSearchFocus = function() {
-    var input = angular.element('#search1')[0];
-    input.focus();
+    inputElement.focus();
   };
 
   var onKeyDown = function(event) {
-    if (isForwardSlash(event.keyCode) && !isInput(document.activeElement)) {
+    if (isForwardSlash(event.keyCode) && !isInput(doc.activeElement)) {
       event.stopPropagation();
       event.preventDefault();
       giveSearchFocus();
     }
   };
 
-  return {
-    enableGlobalShortcut: function() {
-      angular.element($document[0].body).on('keydown', onKeyDown);
-    },
-
-    getSelectedResult: function() {
-      // TODO find a less hacky way to retrieve this
-      var selectionScope = angular.element('.searchresultspopup').scope();
-      var resultIndex = selectionScope.selectedIndex;
-      return selectionScope.results[resultIndex];
-    }
+  this.enableGlobalShortcut = function() {
+    doc.body.onkeydown = onKeyDown;
   };
-}]);
 
-ngHub.controller('SearchController', ["$scope", "$q", "searchUi", "pagesSearch", function($scope, $q, searchUi, pagesSearch) {
+  this.getSelectedResult = function() {
+    var resultsPane = doc.getElementById('search-results');
+    console.log('TODO: hook up', resultsPane);
+  };
+}
+
+function SearchController(controllerElement, searchUi, getResults) {
   searchUi.enableGlobalShortcut();
 
   var isEnter = function(keyCode) {
     return keyCode === 13;
-  }
+  };
 
-  $scope.searchKeyDown = function($event) {
-    if (isEnter($event.keyCode)) {
+  controllerElement.onkeydown = function(someEvent) {
+    if (isEnter(someEvent.keyCode)) {
       var result = searchUi.getSelectedResult();
-      window.location = result.page.url;
+      console.log('TODO: window.location = result.page.url');
     }
   };
 
-  $scope.searchCallback = function(query) {
-    var defer = $q.defer();
-    var results = pagesSearch(query);
-    defer.resolve(results);
-    return defer.promise;
+  controllerElement.onkeyup = function() {
+    return new Promise(function(resolve) {
+      resolve(getResults());
+    });
   };
-}]);
+}
 
-angular.bootstrap(document.documentElement, ["hubSearch"]);
+module.exports = function() {
+  var doc = window.document;
+
+  return fetchIndex(window.SEARCH_BASEURL)
+    .then(function(searchIndex) {
+      var inputElement = doc.getElementById('search1');
+
+      return new SearchController(
+        doc.getElementById('search-controller'),
+        new SearchUi(doc, inputElement),
+        makeSearchCallback(inputElement, searchIndex));
+    })
+    .catch(function(error) {
+      console.error(error);
+    });
+}();
