@@ -9,7 +9,6 @@
   "main": "assets/js/search.js",
   "devDependencies": {
     "browserify": "10.x.x",
-    "napa": "^1.2.0",
     "uglifyify": "3.x.x"
   },
   "repository": {
