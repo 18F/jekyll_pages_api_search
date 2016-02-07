@@ -12,7 +12,6 @@
     "napa": "^1.2.0",
     "uglifyify": "3.x.x"
   },
-  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git@github.com:18F/jekyll_pages_api_search.git"
@@ -35,6 +34,7 @@
   },
   "scripts": {
     "install": "napa mauriciogentile/angular-livesearch",
-    "update": "napa mauriciogentile/angular-livesearch"
+    "update": "napa mauriciogentile/angular-livesearch",
+    "make-bundle": "browserify -g uglifyify assets/js/search.js"
   }
 }
