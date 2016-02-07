@@ -70,7 +70,7 @@ module JekyllPagesApiSearch
     end
 
     def get_tag(name)
-      Liquid::Template.tags[name].new nil, nil, nil
+      Liquid::Template.tags[name].parse(nil, nil, nil, {})
     end
 
     def test_interface_style_present
