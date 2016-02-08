@@ -1,6 +1,7 @@
 require 'bundler/gem_tasks'
 require 'rake/testtask'
 require 'v8'
+require 'zlib'
 
 Rake::TestTask.new do |t|
   t.libs << 'test'
@@ -65,13 +66,8 @@ end
 
 search_bundle_gz = "#{search_bundle}.gz"
 file search_bundle_gz => search_bundle do
-  unless program_exists? 'gzip'
-    puts "Cannot determine if the gzip program exists on the system; " +
-      "skipping compression."
-    return
-  end
-  unless system 'gzip', '--best', '-c', search_bundle, :out=>search_bundle_gz
-    abort "compression failed for: #{search_bundle}"
+  ::Zlib::GzipWriter.open(search_bundle_gz, ::Zlib::BEST_COMPRESSION) do |gz|
+    gz.write(File.read(search_bundle))
   end
 end
 
