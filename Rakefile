@@ -85,6 +85,10 @@ task :build_js => [ :check_for_node ].concat(ARTIFACTS) do
   end
 end
 
+task :clean do
+  [search_bundle, search_bundle_gz].each { |f| File.unlink(f) }
+end
+
 task :test => [:build_js]
 task :build => [:test]
 task :ci_build => [:install_js_components, :test]
