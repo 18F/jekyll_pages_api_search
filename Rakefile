@@ -1,4 +1,5 @@
 require 'bundler/gem_tasks'
+require 'json'
 require 'rake/testtask'
 require 'v8'
 require 'zlib'
@@ -12,7 +13,16 @@ desc "Run tests"
 task :default => :test
 
 def program_exists?(program)
-  system '/usr/bin/which', program, [:out,:err]=>'/dev/null'
+  `which #{program}`
+  $?.success?
+end
+
+def required_programs
+  file = File.read 'package.json'
+  hash = JSON.parse file
+  result = hash["dependencies"].keys
+  dev_dep = hash["devDependencies"] || {}
+  result.concat(dev_dep.keys.each {|k| "#{k} (development)"})
 end
 
 desc "Check for Node.js and NPM packages"
@@ -24,7 +34,7 @@ task :check_for_node do
       "If any of the following packages are not yet installed, please install",
       "them by executing `npm install -g PACKAGE`, where `PACKAGE` is one of",
       "the names below:"].join("\n")
-    puts "  " + programs.join("\n  ")
+    puts "  " + required_programs.join("\n  ")
     return
   end
 
