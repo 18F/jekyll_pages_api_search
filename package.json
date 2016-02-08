@@ -33,7 +33,10 @@
     "jquery": "^2.1.4"
   },
   "scripts": {
-    "install": "napa mauriciogentile/angular-livesearch#a81b8484d8f0b6abeb20dd6478444eb536dbc7ff",
+    "postinstall": "napa",
     "make-bundle": "browserify -g uglifyify assets/js/search.js -o assets/js/search-bundle.js"
+  },
+  "napa": {
+    "angular-livesearch": "mauriciogentile/angular-livesearch#a81b8484d8f0b6abeb20dd6478444eb536dbc7ff"
   }
 }
