@@ -35,6 +35,6 @@
   "scripts": {
     "install": "napa mauriciogentile/angular-livesearch",
     "update": "napa mauriciogentile/angular-livesearch",
-    "make-bundle": "browserify -g uglifyify assets/js/search.js"
+    "make-bundle": "browserify -g uglifyify assets/js/search.js -o assets/js/search-bundle.js"
   }
 }

@@ -59,7 +59,7 @@ main_js = cxt[:package].main
 
 search_bundle = File.join 'assets', 'js', 'search-bundle.js'
 file search_bundle => main_js do
-  unless system 'npm', 'run', 'make-bundle', :out=>search_bundle
+  unless system 'npm', 'run', 'make-bundle'
     abort "browserify failed"
   end
 end
