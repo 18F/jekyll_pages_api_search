@@ -1,6 +1,7 @@
 require 'bundler/gem_tasks'
 require 'rake/testtask'
 require 'v8'
+require 'zlib'
 
 Rake::TestTask.new do |t|
   t.libs << 'test'
@@ -58,20 +59,15 @@ main_js = cxt[:package].main
 
 search_bundle = File.join 'assets', 'js', 'search-bundle.js'
 file search_bundle => main_js do
-  unless system 'npm', 'run', 'make-bundle', :out=>search_bundle
+  unless system 'npm', 'run', 'make-bundle'
     abort "browserify failed"
   end
 end
 
 search_bundle_gz = "#{search_bundle}.gz"
 file search_bundle_gz => search_bundle do
-  unless program_exists? 'gzip'
-    puts "Cannot determine if the gzip program exists on the system; " +
-      "skipping compression."
-    return
-  end
-  unless system 'gzip', '--best', '-c', search_bundle, :out=>search_bundle_gz
-    abort "compression failed for: #{search_bundle}"
+  ::Zlib::GzipWriter.open(search_bundle_gz, ::Zlib::BEST_COMPRESSION) do |gz|
+    gz.write(File.read(search_bundle))
   end
 end
 
@@ -83,6 +79,10 @@ task :build_js => [ :check_for_node ].concat(ARTIFACTS) do
       abort "#{artifact} missing or empty"
     end
   end
+end
+
+task :clean do
+  [search_bundle, search_bundle_gz].each { |f| File.unlink(f) }
 end
 
 task :test => [:build_js]

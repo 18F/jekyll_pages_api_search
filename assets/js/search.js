@@ -85,9 +85,9 @@ ngHub.controller('SearchController', ["$scope", "$q", "searchUi", "pagesSearch",
     }
   };
 
-  $scope.searchCallback = function(params) {
+  $scope.searchCallback = function(query) {
     var defer = $q.defer();
-    var results = pagesSearch(params.query);
+    var results = pagesSearch(query);
     defer.resolve(results);
     return defer.promise;
   };
