@@ -1,5 +1,5 @@
 # @author Mike Bland (michael.bland@gsa.gov)
 
 module JekyllPagesApiSearch
-  VERSION = '0.3.1'
+  VERSION = '0.3.2'
 end
