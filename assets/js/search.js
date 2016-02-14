@@ -53,7 +53,7 @@ function writeResults(searchQuery, doc, searchBox, resultsList, results) {
   if (searchQuery) {
     searchBox.value = searchQuery;
   }
-  results.forEach(function(result) {
+  results.forEach(function(result, index) {
     var item = doc.createElement('li'),
         link = doc.createElement('a'),
         text = doc.createTextNode(result.title);
@@ -63,6 +63,11 @@ function writeResults(searchQuery, doc, searchBox, resultsList, results) {
     link.href = result.url;
     item.appendChild(link);
     resultsList.appendChild(item);
+
+    link.tabindex = index;
+    if (index === 0) {
+      link.focus();
+    }
   });
 }
 
