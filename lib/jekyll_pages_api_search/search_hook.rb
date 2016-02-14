@@ -1,7 +1,10 @@
 # @author Mike Bland (michael.bland@gsa.gov)
 
-require_relative 'compressor'
-require_relative 'js_copier'
+require_relative './compressor'
+require_relative './config'
+require_relative './js_copier'
+require_relative './search_page'
+require_relative './search_page_layouts'
 
 require 'jekyll/site'
 require 'jekyll_pages_api'
@@ -17,8 +20,7 @@ module Jekyll
     alias_method :orig_write, :write
 
     def skip_index?
-      search_config = self.config['jekyll_pages_api_search']
-      search_config.nil? || search_config['skip_index']
+      JekyllPagesApiSearch::Config.skip_index?(self)
     end
 
     def after_render
