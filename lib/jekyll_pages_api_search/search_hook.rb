@@ -2,7 +2,6 @@
 
 require_relative './compressor'
 require_relative './config'
-require_relative './js_copier'
 require_relative './search_page'
 require_relative './search_page_layouts'
 
@@ -27,7 +26,6 @@ module Jekyll
       pages_api_after_render
       return if skip_index?
       self.pages << JekyllPagesApiSearch::SearchIndexBuilder.build_index(self)
-      JekyllPagesApiSearch::JavascriptCopier.copy_to_site(self)
     end
 
     def write

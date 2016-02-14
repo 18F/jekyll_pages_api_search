@@ -30,7 +30,7 @@ module JekyllPagesApiSearch
         File.open(outfile, 'w') {|f| f << content}
       end
       Compressor::gzip_in_memory_content output
-      JavascriptCopier::copy_to_basedir site.source
+      Assets::copy_to_basedir site.source
     end
   end
 end

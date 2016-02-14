@@ -31,7 +31,7 @@ module JekyllPagesApiSearch
       page = generator.page
       @pages_json_rel_path = page.path
       @generated_pages_json = File.join @basedir, @pages_json_rel_path
-      @search_bundle_path = File.join(@basedir, JavascriptCopier::ASSETS_DIR,
+      @search_bundle_path = File.join(@basedir, Assets::JAVASCRIPT_DIR,
         'search-bundle.js')
       @search_index_path = File.join(@basedir, 'search-index.json')
 

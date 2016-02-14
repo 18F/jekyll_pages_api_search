@@ -2,7 +2,6 @@
 
 require 'jekyll_pages_api_search/assets'
 require 'jekyll_pages_api_search/generator'
-require 'jekyll_pages_api_search/js_copier'
 require 'jekyll_pages_api_search/sass'
 require 'jekyll_pages_api_search/search'
 require 'jekyll_pages_api_search/search_hook'
