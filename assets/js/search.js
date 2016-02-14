@@ -3,6 +3,11 @@
 'use strict';
 
 var lunr = require('lunr');
+var querystring = require('querystring');
+var url = require('url');
+
+var SEARCH_INPUT_ID = 'search-input';
+var SEARCH_RESULTS_ID = 'search-results';
 
 function fetchIndex(baseUrl) {
   return new Promise(function(resolve, reject) {
@@ -15,7 +20,7 @@ function fetchIndex(baseUrl) {
       try {
         rawJson = JSON.parse(this.responseText);
         resolve({
-          url_to_doc: rawJson.url_to_doc,
+          urlToDoc: rawJson.url_to_doc,
           index: lunr.Index.load(rawJson.index)
         });
       } catch (err) {
@@ -27,25 +32,38 @@ function fetchIndex(baseUrl) {
   });
 }
 
-function makeSearchCallback(inputElement, searchIndex) {
-  return function() {
-    var term = inputElement.value.trim(),
-        results;
+function parseSearchQuery(queryUrl) {
+  return querystring.parse(url.parse(queryUrl).query).q;
+}
 
-    if (term.length <= 3) {
-      return;
-    }
-    console.log('term is:', term);
+function getResults(query, searchIndex) {
+  var results = searchIndex.index.search(query);
 
-    results = searchIndex.index.search(term);
-    results.forEach(function(result) {
-      var page = searchIndex.url_to_doc[result.ref];
-      result.page = page;
-      result.displayTitle = page.title || page.url;
+  results.forEach(function(result) {
+    var urlAndTitle = searchIndex.urlToDoc[result.ref];
+
+    Object.keys(urlAndTitle).forEach(function(key) {
+      result[key] = urlAndTitle[key];
     });
-    console.log('results are:', results);
-    return results;
-  };
+  });
+  return results;
+}
+
+function writeResults(searchQuery, doc, searchBox, resultsList, results) {
+  if (searchQuery) {
+    searchBox.value = searchQuery;
+  }
+  results.forEach(function(result) {
+    var item = doc.createElement('li'),
+        link = doc.createElement('a'),
+        text = doc.createTextNode(result.title);
+
+    link.appendChild(text);
+    link.title = result.title;
+    link.href = result.url;
+    item.appendChild(link);
+    resultsList.appendChild(item);
+  });
 }
 
 // based on https://github.com/angular/angular.js/blob/54ddca537/docs/app/src/search.js#L198-L206
@@ -73,45 +91,25 @@ function SearchUi(doc, inputElement) {
   this.enableGlobalShortcut = function() {
     doc.body.onkeydown = onKeyDown;
   };
-
-  this.getSelectedResult = function() {
-    var resultsPane = doc.getElementById('search-results');
-    console.log('TODO: hook up', resultsPane);
-  };
-}
-
-function SearchController(controllerElement, searchUi, getResults) {
-  searchUi.enableGlobalShortcut();
-
-  var isEnter = function(keyCode) {
-    return keyCode === 13;
-  };
-
-  controllerElement.onkeydown = function(someEvent) {
-    if (isEnter(someEvent.keyCode)) {
-      var result = searchUi.getSelectedResult();
-      console.log('TODO: window.location = result.page.url');
-    }
-  };
-
-  controllerElement.onkeyup = function() {
-    return new Promise(function(resolve) {
-      resolve(getResults());
-    });
-  };
 }
 
 module.exports = function() {
-  var doc = window.document;
+  var doc = window.document,
+      inputElement = doc.getElementById(SEARCH_INPUT_ID),
+      searchUi = new SearchUi(doc, inputElement),
+      resultsElement = doc.getElementById(SEARCH_RESULTS_ID);
+
+  searchUi.enableGlobalShortcut();
+
+  if (!resultsElement) {
+    return;
+  }
 
   return fetchIndex(window.SEARCH_BASEURL)
     .then(function(searchIndex) {
-      var inputElement = doc.getElementById('search1');
-
-      return new SearchController(
-        doc.getElementById('search-controller'),
-        new SearchUi(doc, inputElement),
-        makeSearchCallback(inputElement, searchIndex));
+      var query = parseSearchQuery(window.location.href),
+          results = getResults(query, searchIndex);
+      writeResults(query, doc, inputElement, resultsElement, results);
     })
     .catch(function(error) {
       console.error(error);

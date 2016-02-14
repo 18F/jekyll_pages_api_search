@@ -1,14 +1,8 @@
-<div id="search-controller" class="bare-content">
-  <div class="search-interface skip-nav-anchor" id="anchor" tabindex="-1">
-    <label for="search1" class="sr-only">Search - click or press '/'</label>
-    <input id="search1" type="text"
-      placeholder="Search – click or press '/'"
-      live-search-item-template="<a href='{{result.page.url}}'>{{result.page.title || result.page.url}}</a>"
-      aria-autocomplete="list"
-      aria-activedescendant="search_result_0"
-      aria-haspopup="true"
-    />
-    <ul id='search-results'>
-    </ul>
+<form action="{{ search_endpoint }}">
+  <div class="field">
+    <label>
+      <input type="search" id="search-input" name="q"
+       placeholder="Search - click or press '/'">
+    </label>
   </div>
-</div>
+</form>
