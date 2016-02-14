@@ -2,7 +2,6 @@
 
 require_relative './jekyll_pages_api_search/assets'
 require_relative './jekyll_pages_api_search/generator'
-require_relative './jekyll_pages_api_search/js_copier'
 require_relative './jekyll_pages_api_search/sass'
 require_relative './jekyll_pages_api_search/search'
 require_relative './jekyll_pages_api_search/search_hook'
