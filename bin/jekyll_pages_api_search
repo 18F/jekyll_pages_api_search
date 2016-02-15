@@ -7,23 +7,23 @@ require 'fileutils'
 require 'jekyll_pages_api'
 require 'zlib'
 
-ASSETS_DIR = ::JekyllPagesApiSearch::JavascriptCopier::ASSETS_DIR
+JAVASCRIPT_DIR = ::JekyllPagesApiSearch::Assets::JAVASCRIPT_DIR
 
-USAGE=<<END_USAGE
-#{$0}: generate a lunr.js index from Jekyll Pages API output
+USAGE = <<END_USAGE.freeze
+#{$PROGRAM_NAME}: generate a lunr.js index from Jekyll Pages API output
 
 Usage:
-  #{$0} basedir config.yml pages.json
+  #{$PROGRAM_NAME} basedir config.yml pages.json
     uses an existing pages.json to build the index
-  #{$0} basedir config.yml pages.json baseURL title_prefix body_element_tag
+  #{$PROGRAM_NAME} basedir config.yml pages.json base_url title_prefix body_element_tag
     produces pages.json and pages.json.gz in addition to the index
-  #{$0} --assets baseURL interface.scss interface.html load.js
+  #{$PROGRAM_NAME} --assets base_url interface.scss interface.html load.js
     produce assets for search interface provided by each {scss,html,js} path
-  #{$0} -h
+  #{$PROGRAM_NAME} -h
 
 The resulting index will be saved in basedir/search-index.json. A gzipped
 version will be produced as well. The JavaScript bundle containing the search
-integration code will be stored in basedir/#{ASSETS_DIR}.
+integration code will be stored in basedir/#{JAVASCRIPT_DIR}.
 
 Arguments:
   -h
@@ -57,13 +57,13 @@ end
 
 if ARGV.length == 5
   if ARGV[0] == '--assets'
-    baseURL, scss, html, js = ARGV[1..ARGV.size]
-    ::JekyllPagesApiSearch::Assets::write_to_files baseURL, scss, html, js
+    base_url, scss, html, js = ARGV[1..ARGV.size]
+    ::JekyllPagesApiSearch::Assets.write_to_files(base_url, scss, html, js)
     exit
   else
     $stderr.puts "Wrong number of arguments: #{ARGV.length}"
     $stderr.puts USAGE
-   exit 1
+    exit 1
   end
 end
 
@@ -73,7 +73,7 @@ unless [3, 6].include? ARGV.length
   exit 1
 end
 
-basedir, config, pages_json, baseURL, title_prefix, body_element_tag = ARGV
+basedir, config, pages_json, base_url, title_prefix, body_element_tag = ARGV
 
 unless File.exist? basedir
   $stderr.puts "#{basedir} does not exist"
@@ -86,4 +86,4 @@ if ARGV.length == 3 && !File.exist?(pages_json)
 end
 
 ::JekyllPagesApiSearch::Standalone.generate_index(basedir, config, pages_json,
-  baseURL, title_prefix, body_element_tag)
+  base_url, title_prefix, body_element_tag)
