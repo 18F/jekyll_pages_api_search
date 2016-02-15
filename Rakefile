@@ -1,4 +1,5 @@
 require 'bundler/gem_tasks'
+require 'English'
 require 'json'
 require 'rake/testtask'
 require 'v8'
@@ -9,32 +10,32 @@ Rake::TestTask.new do |t|
   t.test_files = FileList['test/*test.rb']
 end
 
-desc "Run tests"
-task :default => :test
+desc 'Run tests'
+task default: :test
 
 def program_exists?(program)
   `which #{program}`
-  $?.success?
+  $CHILD_STATUS.success?
 end
 
 def required_programs
   file = File.read 'package.json'
   hash = JSON.parse file
-  result = hash["dependencies"].keys
-  dev_dep = hash["devDependencies"] || {}
-  result.concat(dev_dep.keys.each {|k| "#{k} (development)"})
+  result = hash['dependencies'].keys
+  dev_dep = hash['devDependencies'] || {}
+  result.concat(dev_dep.keys.each { |k| "#{k} (development)" })
 end
 
-desc "Check for Node.js and NPM packages"
+desc 'Check for Node.js and NPM packages'
 task :check_for_node do
   unless program_exists? 'which'
     puts [
-      "Cannot automatically check for Node.js and NPM packages on this system.",
-      "If Node.js is not installed, visit https://nodejs.org/.",
-      "If any of the following packages are not yet installed, please install",
-      "them by executing `npm install -g PACKAGE`, where `PACKAGE` is one of",
-      "the names below:"].join("\n")
-    puts "  " + required_programs.join("\n  ")
+      'Cannot automatically check for Node.js and NPM packages on this system.',
+      'If Node.js is not installed, visit https://nodejs.org/.',
+      'If any of the following packages are not yet installed, please install',
+      'them by executing `npm install -g PACKAGE`, where `PACKAGE` is one of',
+      'the names below:'].join('\n')
+    puts '  ' + required_programs.join('\n  ')
     return
   end
 
@@ -43,13 +44,13 @@ task :check_for_node do
   end
 end
 
-desc "Install JavaScript components"
-task :install_js_components => :check_for_node do
+desc 'Install JavaScript components'
+task install_js_components: :check_for_node do
   abort unless system 'npm', 'install'
 end
 
-desc "Update JavaScript components"
-task :update_js_components => :check_for_node do
+desc 'Update JavaScript components'
+task update_js_components: :check_for_node do
   abort unless system 'npm', 'update'
 end
 
@@ -69,9 +70,7 @@ main_js = cxt[:package].main
 
 search_bundle = File.join 'assets', 'js', 'search-bundle.js'
 file search_bundle => main_js do
-  unless system 'npm', 'run', 'make-bundle'
-    abort "browserify failed"
-  end
+  abort 'browserify failed' unless system('npm', 'run', 'make-bundle')
 end
 
 search_bundle_gz = "#{search_bundle}.gz"
@@ -81,9 +80,9 @@ file search_bundle_gz => search_bundle do
   end
 end
 
-ARTIFACTS = [LIB_LUNR_TARGET, search_bundle, search_bundle_gz]
+ARTIFACTS = [LIB_LUNR_TARGET, search_bundle, search_bundle_gz].freeze
 
-task :build_js => [ :check_for_node ].concat(ARTIFACTS) do
+task build_js: [:check_for_node].concat(ARTIFACTS) do
   ARTIFACTS.each do |artifact|
     unless File.exist?(artifact) && File.stat(artifact).size != 0
       abort "#{artifact} missing or empty"
@@ -95,6 +94,6 @@ task :clean do
   [search_bundle, search_bundle_gz].each { |f| File.unlink(f) }
 end
 
-task :test => [:build_js]
-task :build => [:test]
-task :ci_build => [:install_js_components, :test]
+task test: [:build_js]
+task build: [:test]
+task ci_build: [:install_js_components, :test]
