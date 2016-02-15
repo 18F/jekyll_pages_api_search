@@ -19,7 +19,7 @@ module JekyllPagesApiSearch
   class AssetsCopyToSiteTest < ::Minitest::Test
     def test_copy_to_site
       site = DummySite.new
-      Assets::copy_to_site(site)
+      Assets.copy_to_site(site)
       bundle, bundle_gz = site.static_files
       refute_nil bundle
       refute_nil bundle_gz
@@ -40,12 +40,12 @@ module JekyllPagesApiSearch
     end
 
     def teardown
-      FileUtils.remove_entry self.basedir
+      FileUtils.remove_entry(basedir)
     end
 
     def test_copy_to_basedir
-      Assets::copy_to_basedir(self.basedir)
-      assets_dir = File.join(self.basedir, Assets::JAVASCRIPT_DIR)
+      Assets.copy_to_basedir(basedir)
+      assets_dir = File.join(basedir, Assets::JAVASCRIPT_DIR)
       assert(Dir.exist?(assets_dir))
       expected = ['search-bundle.js', 'search-bundle.js.gz'].map do |f|
         File.join(assets_dir, f)

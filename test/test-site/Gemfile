@@ -1,4 +1,4 @@
 source 'https://rubygems.org'
 
 gem 'jekyll'
-gem 'jekyll_pages_api_search', :path => '../..'
+gem 'jekyll_pages_api_search', path: '../..'

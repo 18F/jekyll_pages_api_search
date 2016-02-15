@@ -40,7 +40,8 @@ module JekyllPagesApiSearch
       @orig_pages_json = File.join SiteBuilder::BUILD_DIR, page.path
       @orig_search_bundle = File.join(SiteBuilder::BUILD_DIR,
         'search-bundle.js')
-      @orig_search_index= File.join SiteBuilder::BUILD_DIR, 'search-index.json'
+      @orig_search_index = File.join(SiteBuilder::BUILD_DIR,
+        'search-index.json')
     end
 
     def self.remove_files(*files_to_remove)
@@ -52,58 +53,58 @@ module JekyllPagesApiSearch
     end
 
     def teardown
-      FileUtils.remove_entry self.basedir
+      FileUtils.remove_entry basedir
     end
 
     def assert_file_exists_and_matches_original(generated_file, orig_file)
       assert File.exist?(generated_file), "#{generated_file} not generated"
       assert_equal(::Digest::SHA256.file(generated_file),
         ::Digest::SHA256.file(generated_file),
-        "content of generated file #{generated_file}\n" +
+        "content of generated file #{generated_file}\n" \
         "differs from original  file #{orig_file}")
     end
 
     def test_create_index_and_pages_json
-      StandaloneTest.remove_files self.pages_json_rel_path
-      baseURL = ""
-      title_prefix = ""
+      StandaloneTest.remove_files pages_json_rel_path
+      baseurl = ''
+      title_prefix = ''
       body_element_tag = '<div class="wrapper">'
-      Standalone::generate_index(self.basedir, self.config,
-        self.generated_pages_json, baseURL, title_prefix, body_element_tag)
+      Standalone.generate_index(basedir, config,
+        generated_pages_json, baseurl, title_prefix, body_element_tag)
 
-      assert_file_exists_and_matches_original(self.search_bundle_path,
-        self.orig_search_bundle)
-      assert_file_exists_and_matches_original("#{self.search_bundle_path}.gz",
-        "#{self.orig_search_bundle}.gz")
-      assert_file_exists_and_matches_original(self.search_index_path,
-        self.orig_search_index)
-      assert_file_exists_and_matches_original("#{self.search_index_path}.gz",
-        "#{self.orig_search_index}.gz")
-      assert_file_exists_and_matches_original(self.generated_pages_json,
-        self.orig_pages_json)
-      assert_file_exists_and_matches_original("#{self.generated_pages_json}.gz",
-        "#{self.orig_pages_json}")
+      assert_file_exists_and_matches_original(search_bundle_path,
+        orig_search_bundle)
+      assert_file_exists_and_matches_original("#{search_bundle_path}.gz",
+        "#{orig_search_bundle}.gz")
+      assert_file_exists_and_matches_original(search_index_path,
+        orig_search_index)
+      assert_file_exists_and_matches_original("#{search_index_path}.gz",
+        "#{orig_search_index}.gz")
+      assert_file_exists_and_matches_original(generated_pages_json,
+        orig_pages_json)
+      assert_file_exists_and_matches_original("#{generated_pages_json}.gz",
+        orig_pages_json.to_s)
     end
 
     def test_create_index_using_existing_pages_json
-      baseURL = nil
+      baseurl = nil
       title_prefix = nil
       body_element_tag = nil
-      Standalone::generate_index(self.basedir, self.config,
-        self.orig_pages_json, baseURL, title_prefix, body_element_tag)
+      Standalone.generate_index(basedir, config,
+        orig_pages_json, baseurl, title_prefix, body_element_tag)
 
-      assert_file_exists_and_matches_original(self.search_bundle_path,
-        self.orig_search_bundle)
-      assert_file_exists_and_matches_original("#{self.search_bundle_path}.gz",
-        "#{self.orig_search_bundle}.gz")
-      assert_file_exists_and_matches_original(self.search_index_path,
-        self.orig_search_index)
-      assert_file_exists_and_matches_original("#{self.search_index_path}.gz",
-        "#{self.orig_search_index}.gz")
-      refute(File.exist?(self.generated_pages_json),
-        "#{self.pages_json_rel_path} generated when it shouldn't've been")
-      refute(File.exist?("#{self.generated_pages_json}.gz"),
-        "#{self.pages_json_rel_path}.gz generated when it shouldn't've been")
+      assert_file_exists_and_matches_original(search_bundle_path,
+        orig_search_bundle)
+      assert_file_exists_and_matches_original("#{search_bundle_path}.gz",
+        "#{orig_search_bundle}.gz")
+      assert_file_exists_and_matches_original(search_index_path,
+        orig_search_index)
+      assert_file_exists_and_matches_original("#{search_index_path}.gz",
+        "#{orig_search_index}.gz")
+      refute(File.exist?(generated_pages_json),
+        "#{pages_json_rel_path} generated when it shouldn't've been")
+      refute(File.exist?("#{generated_pages_json}.gz"),
+        "#{pages_json_rel_path}.gz generated when it shouldn't've been")
     end
   end
 end

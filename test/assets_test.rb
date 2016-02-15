@@ -18,22 +18,22 @@ module JekyllPagesApiSearch
     end
 
     def teardown
-      FileUtils.remove_entry self.basedir
+      FileUtils.remove_entry(basedir)
     end
 
     def test_write_assets_to_files
-      baseURL = '/foo'
-      scss = File.join self.basedir, 'interface.scss'
-      html = File.join self.basedir, 'interface.html'
-      js = File.join self.basedir, 'load-search.js'
+      baseurl = '/foo'
+      scss = File.join(basedir, 'interface.scss')
+      html = File.join(basedir, 'interface.html')
+      js = File.join(basedir, 'load-search.js')
 
-      Assets::write_to_files baseURL, scss, html, js
-      assert(File.exist? scss)
+      Assets.write_to_files(baseurl, scss, html, js)
+      assert(File.exist?(scss))
       assert_equal File.read(Sass::INTERFACE_FILE), File.read(scss)
-      assert(File.exist? html)
+      assert(File.exist?(html))
       assert_equal SearchInterfaceTag::CODE, File.read(html)
-      assert(File.exist? js)
-      assert_equal LoadSearchTag::generate_script(baseURL), File.read(js)
+      assert(File.exist?(js))
+      assert_equal(LoadSearchTag.generate_script(baseurl), File.read(js))
     end
   end
 end

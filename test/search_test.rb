@@ -22,14 +22,14 @@ module JekyllPagesApiSearch
   class DummyLiquidContext
     attr_accessor :registers
     def initialize
-      @registers = {:site => DummyJekyllSite.new}
+      @registers = { site: DummyJekyllSite.new }
     end
   end
 
   class SearchTest < ::Minitest::Test
     def setup
       @index_page_path = File.join(SiteBuilder::BUILD_DIR, 'index.html')
-      assert(File.exist?(@index_page_path), "index.html does not exist")
+      assert(File.exist?(@index_page_path), 'index.html does not exist')
       @context = DummyLiquidContext.new
     end
 
@@ -39,7 +39,7 @@ module JekyllPagesApiSearch
       assert(File.exist?(index_file), "Serialized search index doesn't exist")
 
       File.open(index_file, 'r') do |f|
-        search_index = JSON.parse f.read, :max_nesting => 200
+        search_index = JSON.parse(f.read, max_nesting: 200)
         refute_empty search_index
 
         index = search_index['index']
@@ -54,7 +54,7 @@ module JekyllPagesApiSearch
 
         url_to_doc = search_index['urlToDoc']
         refute_empty url_to_doc
-        url_to_doc.each do |k,v|
+        url_to_doc.each do |k, v|
           refute_nil v['url']
           refute_nil v['title']
           assert_equal k, v['url']
@@ -67,7 +67,7 @@ module JekyllPagesApiSearch
         SearchIndexBuilder::INDEX_FILE)
 
       File.open(index_file, 'r') do |f|
-        search_index = JSON.parse f.read, :max_nesting => 200
+        search_index = JSON.parse(f.read, max_nesting: 200)
         assert_nil search_index['urlToDoc']['/about/']
       end
     end
@@ -78,7 +78,7 @@ module JekyllPagesApiSearch
 
     def test_interface_style_present
       css_path = File.join(SiteBuilder::BUILD_DIR, 'css', 'main.css')
-      assert(File.exist?(css_path), "css/main.css does not exist")
+      assert(File.exist?(css_path), 'css/main.css does not exist')
       File.open(css_path, 'r') do |f|
         assert_includes(f.read, 'div.search-interface',
           'generated files do not contain interface style code')
