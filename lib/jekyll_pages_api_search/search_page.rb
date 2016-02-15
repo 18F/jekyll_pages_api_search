@@ -2,8 +2,8 @@ require 'jekyll'
 
 module JekyllPagesApiSearch
   class SearchPage < ::Jekyll::Page
-    DEFAULT_TITLE = 'Search results'
-    DEFAULT_ENDPOINT = 'search'
+    DEFAULT_TITLE = 'Search results'.freeze
+    DEFAULT_ENDPOINT = 'search'.freeze
 
     def initialize(site)
       @site = site
@@ -22,9 +22,9 @@ module JekyllPagesApiSearch
     private
 
     def endpoint(site_config, search_config)
-      baseurl = "#{site_config['baseurl'] || ''}"
+      baseurl = site_config['baseurl'].to_s
       search_endpoint = search_config['endpoint'] || DEFAULT_ENDPOINT
-      "/#{baseurl}/#{search_endpoint}/".gsub(/\/+/, '/')
+      "/#{baseurl}/#{search_endpoint}/".gsub(%r{\/+}, '/')
     end
   end
 end

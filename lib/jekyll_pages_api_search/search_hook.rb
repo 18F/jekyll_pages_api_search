@@ -25,7 +25,7 @@ module Jekyll
     def after_render
       pages_api_after_render
       return if skip_index?
-      self.pages << JekyllPagesApiSearch::SearchIndexBuilder.build_index(self)
+      pages << JekyllPagesApiSearch::SearchIndexBuilder.build_index(self)
     end
 
     def write
@@ -34,10 +34,10 @@ module Jekyll
     end
 
     def pages_api_search_after_write
-      index = pages.find {|p| p.name == 'search-index.json'}
-      raise 'Search index not found' if index.nil?
+      index = pages.find { |p| p.name == 'search-index.json' }
+      fail 'Search index not found' if index.nil?
       JekyllPagesApiSearch::Compressor.gzip_in_memory_content(
-        "#{index.destination self.dest}" => index.output)
+        index.destination(dest).to_s => index.output)
     end
   end
 end

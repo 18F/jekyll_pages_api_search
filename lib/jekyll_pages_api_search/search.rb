@@ -5,11 +5,11 @@ require 'v8'
 
 module JekyllPagesApiSearch
   class SearchIndexBuilder
-    INDEX_FILE = 'search-index.json'
+    INDEX_FILE = 'search-index.json'.freeze
 
     def self.build_index(site)
       corpus_page = find_corpus_page(site.pages)
-      raise 'Pages API corpus not found' if corpus_page == nil
+      fail 'Pages API corpus not found' if corpus_page.nil?
 
       dirname = File.dirname(__FILE__)
       search_config = site.config['jekyll_pages_api_search']
@@ -22,11 +22,11 @@ module JekyllPagesApiSearch
         site, site.source, '', INDEX_FILE)
       index_page.output = cxt.eval(
         "buildIndex(#{corpus_page.output}, indexFields);")
-      return index_page
+      index_page
     end
 
     def self.find_corpus_page(pages)
-      pages.each {|page| return page if page.name == 'pages.json'}
+      pages.each { |page| return page if page.name == 'pages.json' }
     end
   end
 end

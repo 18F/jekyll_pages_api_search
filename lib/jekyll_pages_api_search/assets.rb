@@ -23,19 +23,17 @@ module JekyllPagesApiSearch
       asset_paths.each do |asset|
         target_path = File.join(basedir, asset)
         target_dir = File.dirname(target_path)
-        FileUtils.mkdir_p(target_dir) if !Dir.exist?(target_dir)
+        FileUtils.mkdir_p(target_dir) unless Dir.exist?(target_dir)
         FileUtils.cp(File.join(SOURCE, asset), target_path)
       end
     end
 
     def self.write_to_files(baseurl, scss, html, js)
-      [scss, html, js].each {|i| FileUtils.mkdir_p File.dirname(i)}
+      [scss, html, js].each { |i| FileUtils.mkdir_p File.dirname(i) }
       FileUtils.cp Sass::INTERFACE_FILE, scss
-      File.open(html, 'w') {|f| f << SearchInterfaceTag::CODE}
-      File.open(js, 'w') {|f| f << LoadSearchTag::generate_script(baseurl)}
+      File.open(html, 'w') { |f| f << SearchInterfaceTag::CODE }
+      File.open(js, 'w') { |f| f << LoadSearchTag.generate_script(baseurl) }
     end
-
-    private
 
     def self.asset_paths
       js_pattern = File.join(SOURCE, JAVASCRIPT_DIR, 'search-bundle.js*')

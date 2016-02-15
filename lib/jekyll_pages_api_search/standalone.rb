@@ -7,17 +7,17 @@ require 'jekyll_pages_api'
 
 module JekyllPagesApiSearch
   class Standalone
-    def self.generate_index(basedir, config, pages_json, baseURL,
+    def self.generate_index(basedir, config, pages_json, base_url,
       title_prefix, body_element_tag)
       site = Site.new basedir, config
 
       # Generate pages.json if it doesn't already exist.
-      if baseURL.nil?
-        site.load_pages_json pages_json
+      if base_url.nil?
+        site.load_pages_json(pages_json)
       else
         site.pages << ::JekyllPagesApi::Generator.new(
           ::JekyllPagesApi::GeneratedSite.new(
-            baseURL, basedir, title_prefix, body_element_tag)).page
+            base_url, basedir, title_prefix, body_element_tag)).page
       end
 
       # Build the index; output pages_json if necessary; gzip outputs.
@@ -27,10 +27,10 @@ module JekyllPagesApiSearch
       output[pages_json] = site.pages.first.output unless File.exist? pages_json
       output.each do |outfile, content|
         FileUtils.mkdir_p File.dirname(outfile)
-        File.open(outfile, 'w') {|f| f << content}
+        File.open(outfile, 'w') { |f| f << content }
       end
-      Compressor::gzip_in_memory_content output
-      Assets::copy_to_basedir site.source
+      Compressor.gzip_in_memory_content(output)
+      Assets.copy_to_basedir(site.source)
     end
   end
 end

@@ -10,7 +10,7 @@ module JekyllPagesApiSearch
 
     def initialize(basedir, config)
       @source = basedir
-      @config = SafeYAML.load_file(config, :safe => true)
+      @config = SafeYAML.load_file(config, safe: true)
       @pages = []
     end
 
@@ -19,11 +19,11 @@ module JekyllPagesApiSearch
     def load_pages_json(pages_json_path)
       basename = File.basename pages_json_path
       rel_dir = File.dirname pages_json_path
-      rel_dir = rel_dir[self.source.size..rel_dir.size]
+      rel_dir = rel_dir[source.size..rel_dir.size]
       page = ::JekyllPagesApi::PageWithoutAFile.new(
-        self, self.source, rel_dir, basename)
+        self, source, rel_dir, basename)
       page.output = File.read(pages_json_path)
-      self.pages << page
+      pages << page
     end
   end
 end

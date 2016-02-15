@@ -8,7 +8,7 @@ module JekyllPagesApiSearch
   # Copied from guides_style_18f/layouts.rb. Could probably be extracted into
   # another gem.
   class SearchPageLayouts < ::Jekyll::Layout
-    DEFAULT_LAYOUT = 'search-results'
+    DEFAULT_LAYOUT = 'search-results'.freeze
     LAYOUTS_DIR = File.join(File.dirname(__FILE__), 'layouts')
 
     private_class_method :new
