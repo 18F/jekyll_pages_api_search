@@ -1,4 +1,4 @@
-/* jshint node: true */
+/* eslint-env browser */
 
 'use strict';
 
@@ -71,7 +71,9 @@ function writeResults(searchQuery, doc, searchBox, resultsList, results) {
   });
 }
 
+/* eslint-disable */
 // based on https://github.com/angular/angular.js/blob/54ddca537/docs/app/src/search.js#L198-L206
+/* eslint-enable */
 function SearchUi(doc, inputElement) {
   var isForwardSlash = function(keyCode) {
     return keyCode === 191;

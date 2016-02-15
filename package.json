@@ -9,8 +9,11 @@
   "main": "assets/js/search.js",
   "devDependencies": {
     "browserify": "10.x.x",
+    "eslint": "^2.1.0",
+    "gulp-eslint": "^2.0.0",
     "lunr": "^0.6.0",
-    "uglifyify": "3.x.x"
+    "uglifyify": "3.x.x",
+    "yargs": "^4.1.0"
   },
   "repository": {
     "type": "git",
@@ -29,6 +32,8 @@
   },
   "dependencies": {},
   "scripts": {
+    "test": "gulp test",
+    "lint": "gulp lint",
     "make-bundle": "browserify -g uglifyify assets/js/search.js -o assets/js/search-bundle.js"
   }
 }
