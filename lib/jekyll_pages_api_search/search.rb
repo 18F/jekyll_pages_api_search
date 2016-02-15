@@ -15,13 +15,13 @@ module JekyllPagesApiSearch
       search_config = site.config['jekyll_pages_api_search']
       cxt = V8::Context.new
       cxt.load File.join(dirname, 'lunr.min.js')
-      cxt[:index_fields] = search_config['index_fields'] || {}
-      cxt.eval("var corpus = #{corpus_page.output};")
+      cxt[:indexFields] = search_config['index_fields'] || {}
       cxt.load(File.join(dirname, 'search.js'))
 
       index_page = JekyllPagesApi::PageWithoutAFile.new(
         site, site.source, '', INDEX_FILE)
-      index_page.output = cxt[:result]
+      index_page.output = cxt.eval(
+        "buildIndex(#{corpus_page.output}, indexFields);")
       return index_page
     end
 

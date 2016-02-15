@@ -20,7 +20,7 @@ function fetchIndex(baseUrl) {
       try {
         rawJson = JSON.parse(this.responseText);
         resolve({
-          urlToDoc: rawJson.url_to_doc,
+          urlToDoc: rawJson.urlToDoc,
           index: lunr.Index.load(rawJson.index)
         });
       } catch (err) {
