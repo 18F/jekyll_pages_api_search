@@ -9,6 +9,7 @@
   "main": "assets/js/search.js",
   "devDependencies": {
     "browserify": "10.x.x",
+    "lunr": "^0.6.0",
     "uglifyify": "3.x.x"
   },
   "repository": {
@@ -26,10 +27,7 @@
   "directories": {
     "test": "test"
   },
-  "dependencies": {
-    "lunr": "^0.5.9",
-    "jquery": "^2.1.4"
-  },
+  "dependencies": {},
   "scripts": {
     "make-bundle": "browserify -g uglifyify assets/js/search.js -o assets/js/search-bundle.js"
   }
