@@ -1,5 +1,4 @@
-# @author Mike Bland (michael.bland@gsa.gov)
-
+require 'fileutils'
 require 'zlib'
 
 module JekyllPagesApiSearch
@@ -9,6 +8,7 @@ module JekyllPagesApiSearch
         ::Zlib::GzipWriter.open("#{file}.gz", Zlib::BEST_COMPRESSION) do |gz|
           gz.write content
         end
+        FileUtils.touch([file, "#{file}.gz"])
       end
     end
   end
