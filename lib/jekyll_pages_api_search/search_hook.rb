@@ -17,8 +17,7 @@ module Jekyll
     alias_method :orig_write, :write
 
     def skip_index?
-      search_config = self.config['jekyll_pages_api_search']
-      search_config.nil? || search_config['skip_index']
+      @skip_index ||= JekyllPagesApiSearch::Config.skip_index?(self)
     end
 
     def after_render

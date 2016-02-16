@@ -49,7 +49,7 @@ module JekyllPagesApiSearch
         refute_nil index['tokenStore']
         refute_nil index['version']
 
-        url_to_doc = search_index['url_to_doc']
+        url_to_doc = search_index['urlToDoc']
         refute_empty url_to_doc
         url_to_doc.each do |k,v|
           refute_nil v['url']
@@ -65,7 +65,7 @@ module JekyllPagesApiSearch
 
       File.open(index_file, 'r') do |f|
         search_index = JSON.parse f.read, :max_nesting => 200
-        assert_nil search_index['url_to_doc']['/about/']
+        assert_nil search_index['urlToDoc']['/about/']
       end
     end
 
