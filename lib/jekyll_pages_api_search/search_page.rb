@@ -22,9 +22,7 @@ module JekyllPagesApiSearch
     private
 
     def endpoint(site_config, search_config)
-      baseurl = "#{site_config['baseurl'] || ''}"
-      search_endpoint = search_config['endpoint'] || DEFAULT_ENDPOINT
-      "/#{baseurl}/#{search_endpoint}/".gsub(/\/+/, '/')
+      "/#{search_config['endpoint'] || DEFAULT_ENDPOINT}/".gsub(/\/+/, '/')
     end
   end
 end
