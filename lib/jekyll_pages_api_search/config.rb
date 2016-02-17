@@ -1,5 +1,10 @@
 module JekyllPagesApiSearch
   class Config
+    def self.get(site, value)
+      search_config = site.config['jekyll_pages_api_search']
+      search_config[value] unless search_config.nil?
+    end
+
     def self.skip_index?(site)
       search_config = site.config['jekyll_pages_api_search']
       return true if search_config.nil?
