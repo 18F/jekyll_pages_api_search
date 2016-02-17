@@ -1,5 +1,6 @@
 # @author Mike Bland (michael.bland@gsa.gov)
 
+require_relative './config'
 require 'liquid'
 
 module JekyllPagesApiSearch
@@ -11,10 +12,13 @@ module JekyllPagesApiSearch
 
     def render(context)
       site = context.registers[:site]
+      placeholder = Config.get(site, 'placeholder') ||
+        'Search - click or press \'/\''
       baseurl = site.config['baseurl'] || ''
       search_endpoint = site.config['search_endpoint'] || 'search/'
       search_endpoint = "/#{baseurl}/#{search_endpoint}/".gsub('//', '/')
-      TEMPLATE.render('search_endpoint' => search_endpoint)
+      TEMPLATE.render('search_endpoint' => search_endpoint,
+        'placeholder' => placeholder)
     end
   end
 
