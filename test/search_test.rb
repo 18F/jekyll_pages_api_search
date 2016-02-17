@@ -12,7 +12,10 @@ module JekyllPagesApiSearch
   class DummyJekyllSite
     attr_accessor :config
     def initialize
-      @config = {}
+      @config = {
+        'baseurl' => '/baseurl',
+        'search_endpoint' => 'lunr-search',
+      }
     end
   end
 
@@ -77,7 +80,7 @@ module JekyllPagesApiSearch
       css_path = File.join(SiteBuilder::BUILD_DIR, 'css', 'main.css')
       assert(File.exist?(css_path), "css/main.css does not exist")
       File.open(css_path, 'r') do |f|
-        assert_includes(f.read, 'ul.searchresultspopup',
+        assert_includes(f.read, 'div.search-interface',
           'generated files do not contain interface style code')
       end
     end
@@ -92,7 +95,6 @@ module JekyllPagesApiSearch
 
     def test_load_tag_replaced
       tag = get_tag LoadSearchTag::NAME
-      @context.registers[:site].config['baseurl'] = ''
       File.open(@index_page_path, 'r') do |f|
         assert_includes(f.read, tag.render(@context),
           'generated files do not contain script loading code')

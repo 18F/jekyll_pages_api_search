@@ -8,11 +8,8 @@
   },
   "main": "assets/js/search.js",
   "devDependencies": {
-    "angular": "1.3.x",
     "browserify": "10.x.x",
-    "jquery": "^2.1.4",
     "lunr": "^0.6.0",
-    "napa": "^1.2.0",
     "uglifyify": "3.x.x"
   },
   "repository": {
@@ -32,10 +29,6 @@
   },
   "dependencies": {},
   "scripts": {
-    "postinstall": "napa",
     "make-bundle": "browserify -g uglifyify assets/js/search.js -o assets/js/search-bundle.js"
-  },
-  "napa": {
-    "angular-livesearch": "mauriciogentile/angular-livesearch#a81b8484d8f0b6abeb20dd6478444eb536dbc7ff"
   }
 }
