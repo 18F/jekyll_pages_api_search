@@ -24,7 +24,6 @@ Gem::Specification.new do |s|
   s.executables   = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
 
   s.add_runtime_dependency 'jekyll_pages_api', '~> 0.1.4'
-  s.add_runtime_dependency 'therubyracer', '~> 0.12.2'
   s.add_runtime_dependency 'sass', '~> 3.4'
   s.add_development_dependency 'rake', '~> 10.0'
   s.add_development_dependency 'bundler', '~> 1.7'

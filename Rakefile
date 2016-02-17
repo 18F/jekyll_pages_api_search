@@ -1,8 +1,10 @@
 require 'bundler/gem_tasks'
 require 'json'
 require 'rake/testtask'
-require 'v8'
 require 'zlib'
+
+PACKAGE_INFO = JSON.parse(
+  File.read(File.join(File.dirname(__FILE__), 'package.json')))
 
 Rake::TestTask.new do |t|
   t.libs << 'test'
@@ -18,11 +20,9 @@ def program_exists?(program)
 end
 
 def required_programs
-  file = File.read 'package.json'
-  hash = JSON.parse file
-  result = hash["dependencies"].keys
-  dev_dep = hash["devDependencies"] || {}
-  result.concat(dev_dep.keys.each {|k| "#{k} (development)"})
+  result = PACKAGE_INFO['dependencies'].keys
+  dev_dep = PACKAGE_INFO['devDependencies'] || {}
+  result.concat(dev_dep.keys.each { |k| "#{k} (development)" })
 end
 
 desc "Check for Node.js and NPM packages"
@@ -60,13 +60,7 @@ file LIB_LUNR_TARGET => LIB_LUNR_SOURCE do
   FileUtils.cp LIB_LUNR_SOURCE, LIB_LUNR_TARGET
 end
 
-# TODO(mbland): Extract this and other bits from this Rakefile into a gem.
-cxt = V8::Context.new
-basedir = File.dirname(__FILE__)
-package_json = File.read File.join(basedir, 'package.json')
-cxt.eval "var package = #{package_json};"
-main_js = cxt[:package].main
-
+main_js = PACKAGE_INFO['main']
 search_bundle = File.join 'assets', 'js', 'search-bundle.js'
 file search_bundle => main_js do
   unless system 'npm', 'run', 'make-bundle'
