@@ -1,11 +1,11 @@
 @media screen and (min-width: 45em) {
-  div.search-interface{
+  .search-interface{
       width: 30%;
       float: right;
   }
 }
 
-div.search-interface input {
+.search-interface input {
   display: block;
   -webkit-box-sizing: border-box;
   width: 100%;
@@ -18,7 +18,7 @@ div.search-interface input {
   background-size: 16px;
 }
 
-div.search-interface form button {
+.search-interface button {
   position: absolute;
   left: -9999em;
   bottom: 3px;
@@ -32,13 +32,14 @@ div.search-interface form button {
   padding: 4px 12px;
 }
 
-div.search-interface form button:hover {
+.search-interface button:hover {
   background-color: #eee;
   color: #111;
   border-color: #bbb;
 }
 
-.sr-only { //for screen readers
+.sr-only,
+.search-interface span.label-text {
   position: absolute;
   overflow: hidden;
   width:1px;

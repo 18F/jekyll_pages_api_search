@@ -80,7 +80,7 @@ module JekyllPagesApiSearch
       css_path = File.join(SiteBuilder::BUILD_DIR, 'css', 'main.css')
       assert(File.exist?(css_path), "css/main.css does not exist")
       File.open(css_path, 'r') do |f|
-        assert_includes(f.read, 'div.search-interface',
+        assert_includes(f.read, '.search-interface',
           'generated files do not contain interface style code')
       end
     end
