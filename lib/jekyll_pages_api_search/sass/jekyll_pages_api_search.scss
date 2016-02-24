@@ -38,8 +38,8 @@
   border-color: #bbb;
 }
 
-.sr-only
-.search-interface span.label-text { //for screen readers
+.sr-only,
+.search-interface span.label-text {
   position: absolute;
   overflow: hidden;
   width:1px;
