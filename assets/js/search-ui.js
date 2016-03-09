@@ -12,10 +12,19 @@ function SearchUi(doc, options) {
     opts.inputElementId || SearchUi.DEFAULT_SEARCH_INPUT_ID);
   this.resultsElement = doc.getElementById(
     opts.searchResultsId || SearchUi.DEFAULT_SEARCH_RESULTS_ID);
+  this.emptyResultsMessagePrefix = opts.emptyResultsMessagePrefix ||
+    SearchUi.DEFAULT_EMPTY_RESULTS_MESSAGE_PREFIX;
+  this.emptyResultsElementType = opts.emptyResultsElementType ||
+    SearchUi.DEFAULT_EMPTY_RESULTS_ELEMENT_TYPE;
+  this.emptyResultsElementClass = opts.emptyResultsElementClass ||
+    SearchUi.DEFAULT_EMPTY_RESULTS_ELEMENT_CLASS;
 }
 
 SearchUi.DEFAULT_SEARCH_INPUT_ID = 'search-input';
 SearchUi.DEFAULT_SEARCH_RESULTS_ID = 'search-results';
+SearchUi.DEFAULT_EMPTY_RESULTS_MESSAGE_PREFIX = 'No results found for';
+SearchUi.DEFAULT_EMPTY_RESULTS_ELEMENT_TYPE = 'p';
+SearchUi.DEFAULT_EMPTY_RESULTS_ELEMENT_CLASS = 'search-empty';
 
 function isForwardSlash(keyCode) {
   return keyCode === 191;
@@ -53,10 +62,11 @@ SearchUi.prototype.renderResults = function(query, results, renderResults) {
 };
 
 SearchUi.prototype.createEmptyResultsMessage = function(query) {
-  var item = this.doc.createElement('p'),
+  var item = this.doc.createElement(this.emptyResultsElementType),
       message = this.doc.createTextNode(
-        'No results found for "' + query + '".');
+        this.emptyResultsMessagePrefix + ' "' + query + '".');
 
+  item.style.className = this.emptyResultsElementClass;
   item.appendChild(message);
   this.resultsElement.parentElement.appendChild(item);
 };
