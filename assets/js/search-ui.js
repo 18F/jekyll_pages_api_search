@@ -43,5 +43,20 @@ SearchUi.prototype.renderResults = function(query, results, renderResults) {
     return;
   }
   this.inputElement.value = query;
-  renderResults(results, this.doc, this.resultsElement);
+
+  if (results.length === 0) {
+    this.createEmptyResultsMessage(query);
+    this.inputElement.focus();
+    return;
+  }
+  renderResults(query, results, this.doc, this.resultsElement);
+};
+
+SearchUi.prototype.createEmptyResultsMessage = function(query) {
+  var item = this.doc.createElement('p'),
+      message = this.doc.createTextNode(
+        'No results found for "' + query + '".');
+
+  item.appendChild(message);
+  this.resultsElement.parentElement.appendChild(item);
 };

@@ -5,7 +5,7 @@
 var SearchEngine = require('./search-engine');
 var SearchUi = require('./search-ui');
 
-function writeResults(results, doc, resultsList) {
+function writeResults(query, results, doc, resultsList) {
   results.forEach(function(result, index) {
     var item = doc.createElement('li'),
         link = doc.createElement('a'),
