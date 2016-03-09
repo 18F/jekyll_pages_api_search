@@ -9,8 +9,10 @@ var url = require('url');
 module.exports = SearchEngine;
 
 function SearchEngine(options) {
-  this.indexPath = options.indexPath || SearchEngine.DEFAULT_SEARCH_INDEX_PATH;
-  this.queryParam = options.queryParam || SearchEngine.DEFAULT_QUERY_PARAM;
+  var opts = options || {};
+
+  this.indexPath = opts.indexPath || SearchEngine.DEFAULT_SEARCH_INDEX_PATH;
+  this.queryParam = opts.queryParam || SearchEngine.DEFAULT_QUERY_PARAM;
 }
 
 SearchEngine.DEFAULT_SEARCH_INDEX_PATH = '/search-index.json';

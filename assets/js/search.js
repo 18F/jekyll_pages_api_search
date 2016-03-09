@@ -5,10 +5,7 @@
 var SearchEngine = require('./search-engine');
 var SearchUi = require('./search-ui');
 
-function writeResults(searchQuery, doc, searchBox, resultsList, results) {
-  if (searchQuery) {
-    searchBox.value = searchQuery;
-  }
+function writeResults(results, doc, resultsList) {
   results.forEach(function(result, index) {
     var item = doc.createElement('li'),
         link = doc.createElement('a'),
@@ -28,24 +25,21 @@ function writeResults(searchQuery, doc, searchBox, resultsList, results) {
 }
 
 module.exports = function() {
-  var doc = window.document,
-      inputElement = doc.getElementById(SearchUi.DEFAULT_SEARCH_INPUT_ID),
-      searchUi = new SearchUi(doc, inputElement),
-      resultsElement = doc.getElementById(SearchUi.DEFAULT_SEARCH_RESULTS_ID),
+  var searchUi = new SearchUi(window.document),
       searchEngine = new SearchEngine();
 
   searchUi.enableGlobalShortcut();
 
-  if (!resultsElement) {
+  if (!searchUi.resultsElement) {
     return;
   }
 
   return searchEngine.executeSearch(window.SEARCH_BASEURL, window.location.href)
     .then(function(searchResults) {
-      writeResults(searchResults.query, doc, inputElement, resultsElement,
-        searchResults.results);
+      searchUi.renderResults(searchResults.query, searchResults.results,
+        writeResults);
     })
     .catch(function(error) {
       console.error(error);
     });
-};
+}();
