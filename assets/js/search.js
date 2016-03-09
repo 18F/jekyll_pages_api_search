@@ -1,4 +1,4 @@
-/* jshint node: true */
+/* eslint-env browser, node */
 
 'use strict';
 
@@ -71,6 +71,7 @@ function writeResults(searchQuery, doc, searchBox, resultsList, results) {
   });
 }
 
+// eslint-disable-next-line
 // based on https://github.com/angular/angular.js/blob/54ddca537/docs/app/src/search.js#L198-L206
 function SearchUi(doc, inputElement) {
   var isForwardSlash = function(keyCode) {
