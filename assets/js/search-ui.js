@@ -64,9 +64,10 @@ SearchUi.prototype.renderResults = function(query, results, renderResults) {
 SearchUi.prototype.createEmptyResultsMessage = function(query) {
   var item = this.doc.createElement(this.emptyResultsElementType),
       message = this.doc.createTextNode(
-        this.emptyResultsMessagePrefix + ' "' + query + '".');
+        this.emptyResultsMessagePrefix + ' "' + query + '".'),
+      parentItem = this.resultsElement.parentElement;
 
   item.style.className = this.emptyResultsElementClass;
   item.appendChild(message);
-  this.resultsElement.parentElement.appendChild(item);
+  parentItem.insertBefore(item, this.resultsElement);
 };
