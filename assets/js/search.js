@@ -40,11 +40,10 @@ module.exports = function() {
     return;
   }
 
-  return searchEngine.fetchIndex(window.SEARCH_BASEURL)
-    .then(function(searchIndex) {
-      var query = searchEngine.parseSearchQuery(window.location.href),
-          results = searchEngine.getResults(query, searchIndex);
-      writeResults(query, doc, inputElement, resultsElement, results);
+  return searchEngine.executeSearch(window.SEARCH_BASEURL, window.location.href)
+    .then(function(searchResults) {
+      writeResults(searchResults.query, doc, inputElement, resultsElement,
+        searchResults.results);
     })
     .catch(function(error) {
       console.error(error);

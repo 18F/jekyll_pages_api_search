@@ -57,3 +57,13 @@ SearchEngine.prototype.getResults = function(query, searchIndex) {
   });
   return results;
 };
+
+SearchEngine.prototype.executeSearch = function(baseUrl, queryUrl) {
+  var searchEngine = this;
+  return searchEngine.fetchIndex(baseUrl)
+    .then(function(searchIndex) {
+      var query = searchEngine.parseSearchQuery(queryUrl),
+          results = searchEngine.getResults(query, searchIndex);
+      return Promise.resolve({ query: query, results: results });
+    });
+};
