@@ -5,7 +5,7 @@
 var SearchEngine = require('./search-engine');
 var SearchUi = require('./search-ui');
 
-function writeResults(query, results, doc, resultsList) {
+function writeResultsToList(query, results, doc, resultsList) {
   results.forEach(function(result, index) {
     var item = doc.createElement('li'),
         link = doc.createElement('a'),
@@ -25,8 +25,10 @@ function writeResults(query, results, doc, resultsList) {
 }
 
 module.exports = function() {
-  var searchUi = new SearchUi(window.document),
-      searchEngine = new SearchEngine();
+  var searchUi = new SearchUi(window.document,
+        window.JEKYLL_PAGES_API_SEARCH_UI_OPTIONS),
+      searchEngine = new SearchEngine(
+        window.JEKYLL_PAGES_API_SEARCH_ENGINE_OPTIONS);
 
   searchUi.enableGlobalShortcut();
 
@@ -34,10 +36,11 @@ module.exports = function() {
     return;
   }
 
-  return searchEngine.executeSearch(window.SEARCH_BASEURL, window.location.href)
+  return searchEngine.executeSearch(
+    window.JEKYLL_PAGES_API_SEARCH_BASEURL, window.location.href)
     .then(function(searchResults) {
       searchUi.renderResults(searchResults.query, searchResults.results,
-        writeResults);
+        window.renderJekyllPagesApiSearchResults || writeResultsToList);
     })
     .catch(function(error) {
       console.error(error);
