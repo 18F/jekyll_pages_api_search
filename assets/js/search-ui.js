@@ -43,6 +43,7 @@ SearchUi.prototype.enableGlobalShortcut = function() {
       event.stopPropagation();
       event.preventDefault();
       inputElement.focus();
+      inputElement.select();
     }
   };
 };
