@@ -336,8 +336,7 @@ and test the gem:
 1. Commit the version number update directly to the `master` branch, replacing
    `X.X.X` with the new version number:
    ```sh
-   $ git add lib/jekyll_pages_api_search/version.rb
-   $ git commit -m 'Bump to vX.X.X'
+   $ git commit -m 'Bump to vX.X.X' lib/jekyll_pages_api_search/version.rb
    ```
 
 1. Finally, run the following command. It will build the gem, tag the head
