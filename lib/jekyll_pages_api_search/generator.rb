@@ -1,4 +1,5 @@
 require_relative './assets'
+require_relative './browserify'
 require_relative './config'
 require_relative './search_page'
 require_relative './search_page_layouts'

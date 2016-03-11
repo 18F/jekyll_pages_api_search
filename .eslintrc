@@ -1,0 +1,39 @@
+{ "extends": "eslint:recommended",
+  "ecmaFeatures" : {
+    "modules" : true
+  },
+  "env" : {
+    "node" : true,
+    "mocha" : true,
+    "es6" : true /** all es6 features except modules */
+  },
+  "rules" : {
+    "indent": [
+        2,
+        2,
+        { "VariableDeclarator": 2 }
+    ],
+    "quotes": [
+        2,
+        "single"
+    ],
+    "semi": [
+        2,
+        "always"
+    ],
+    "comma-dangle": [
+        1,
+        "never"
+    ],
+    "no-console": [ 0 ],
+    "max-len": [
+      2,
+      80,
+      2
+    ],
+    "camelcase": [
+      2,
+      { "properties": "always" }
+    ]
+  }
+}

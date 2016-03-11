@@ -38,6 +38,7 @@ module Jekyll
       raise 'Search index not found' if index.nil?
       JekyllPagesApiSearch::Compressor.gzip_in_memory_content(
         "#{index.destination self.dest}" => index.output)
+      JekyllPagesApiSearch::Browserify.create_bundle(self)
     end
   end
 end

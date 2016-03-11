@@ -28,14 +28,22 @@ module JekyllPagesApiSearch
 
     def render(context)
       return @code if @code
-      baseurl = context.registers[:site].config['baseurl']
-      @code = LoadSearchTag.generate_script baseurl
+      site = context.registers[:site]
+      baseurl = site.config['baseurl']
+      @code = LoadSearchTag.generate_script(baseurl, site: site)
     end
 
-    def self.generate_script(baseurl)
-      "<script>SEARCH_BASEURL = '#{baseurl}';</script>\n" +
+    def self.generate_script(baseurl, site: nil)
+      "<script>JEKYLL_PAGES_API_SEARCH_BASEURL = '#{baseurl}';</script>\n" +
+        site_bundle_load_tag(site, baseurl) +
         "<script async src=\"#{baseurl}/assets/js/search-bundle.js\">" +
         "</script>"
+    end
+
+    def self.site_bundle_load_tag(site, baseurl)
+      browserify_config = site.nil? ? nil : Config.get(site, 'browserify')
+      return '' if browserify_config.nil?
+      "<script src=\"#{baseurl}/#{browserify_config['target']}\"></script>\n"
     end
   end
 
