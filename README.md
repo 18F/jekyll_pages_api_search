@@ -2,7 +2,9 @@
 
 [![Build Status](https://travis-ci.org/18F/jekyll_pages_api_search.svg?branch=master)](https://travis-ci.org/18F/jekyll_pages_api_search)
 
-This Ruby gem adds a [lunr.js](http://lunrjs.com) search index to a
+The [`jekyll_pages_api_search` Ruby
+gem](https://rubygems.org/gems/jekyll_pages_api_search) adds a
+[lunr.js](http://lunrjs.com) search index to a
 [Jekyll](http://jekyllrb.com/)-based web site.
 
 The search index is generated and compressed automatically via `jekyll build`
@@ -319,6 +321,17 @@ group :jekyll_plugins do
   gem 'jekyll_pages_api_search', :path => '../jekyll_pages_api_search'
 end
 ```
+
+## Releasing
+
+After following the steps from the [Developing section](#developing) to build
+and test the gem, and merging all changes to the `master` branch, first bump
+the version number by editing
+[`lib/jekyll_pages_api_search/version.rb`](lib/jekyll_pages_api_search/version.rb).
+Then run `bundle exec rake release` to build the gem, tag the head commit in
+`git`, push the branch and tag to GitHub, and ultimately push the release to 
+[`jekyll_pages_api_search` on
+RubyGems.org](https://rubygems.org/gems/jekyll_pages_api_search).
 
 ## Contributing
 
