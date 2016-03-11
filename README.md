@@ -325,13 +325,26 @@ end
 ## Releasing
 
 After following the steps from the [Developing section](#developing) to build
-and test the gem, and merging all changes to the `master` branch, first bump
-the version number by editing
-[`lib/jekyll_pages_api_search/version.rb`](lib/jekyll_pages_api_search/version.rb).
-Then run `bundle exec rake release` to build the gem, tag the head commit in
-`git`, push the branch and tag to GitHub, and ultimately push the release to 
-[`jekyll_pages_api_search` on
-RubyGems.org](https://rubygems.org/gems/jekyll_pages_api_search).
+and test the gem: 
+
+1. Ensure all changes for the release have already been merged all into the
+   `master` branch.
+   
+1. Bump the version number by editing
+   [`lib/jekyll_pages_api_search/version.rb`](lib/jekyll_pages_api_search/version.rb).
+
+1. Commit the version number update directly to the `master` branch, replacing
+   `X.X.X` with the new version number:
+   ```sh
+   $ git commit -m 'Bump to vX.X.X' lib/jekyll_pages_api_search/version.rb
+   ```
+
+1. Finally, run the following command. It will build the gem, tag the head
+   commit in `git`, push the branch and tag to GitHub, and ultimately push the
+   release to [`jekyll_pages_api_search` on RubyGems.org](https://rubygems.org/gems/jekyll_pages_api_search).
+   ```sh
+   $ bundle exec rake release
+   ```
 
 ## Contributing
 
