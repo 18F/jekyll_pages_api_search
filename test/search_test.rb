@@ -14,7 +14,9 @@ module JekyllPagesApiSearch
     def initialize
       @config = {
         'baseurl' => '/baseurl',
-        'search_endpoint' => 'lunr-search',
+        'jekyll_pages_api_search' => {
+          'endpoint' => 'lunr-search'
+        }
       }
     end
   end

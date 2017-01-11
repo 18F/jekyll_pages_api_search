@@ -15,7 +15,7 @@ module JekyllPagesApiSearch
       placeholder = Config.get(site, 'placeholder') ||
         'Search - click or press \'/\''
       baseurl = site.config['baseurl'] || ''
-      search_endpoint = site.config['search_endpoint'] || 'search/'
+      search_endpoint = site.config['jekyll_pages_api_search']['endpoint'] || 'search/'
       search_endpoint = "/#{baseurl}/#{search_endpoint}/".gsub('//', '/')
       TEMPLATE.render('search_endpoint' => search_endpoint,
         'placeholder' => placeholder)
