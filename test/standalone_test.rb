@@ -11,8 +11,16 @@ require 'minitest/autorun'
 require 'tmpdir'
 
 module JekyllPagesApiSearch
-  class DummySite
+  class StandaloneDummySite
     def each_site_file
+    end
+
+    def in_theme_dir(*paths)
+      ''
+    end
+
+    def in_source_dir(*paths)
+      ''
     end
   end
 
@@ -27,7 +35,7 @@ module JekyllPagesApiSearch
       @config = File.join SiteBuilder::SOURCE_DIR, '_config.yml'
 
       # Just need this to grab the canonical JekyllPagesApi output path.
-      generator = ::JekyllPagesApi::Generator.new DummySite.new
+      generator = ::JekyllPagesApi::Generator.new StandaloneDummySite.new
       page = generator.page
       @pages_json_rel_path = page.path
       @generated_pages_json = File.join @basedir, @pages_json_rel_path

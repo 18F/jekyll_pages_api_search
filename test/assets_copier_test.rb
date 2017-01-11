@@ -8,7 +8,7 @@ require 'minitest/autorun'
 require 'tmpdir'
 
 module JekyllPagesApiSearch
-  class DummySite
+  class AssetsCopierDummySite
     attr_accessor :static_files
 
     def initialize
@@ -18,7 +18,7 @@ module JekyllPagesApiSearch
 
   class AssetsCopyToSiteTest < ::Minitest::Test
     def test_copy_to_site
-      site = DummySite.new
+      site = AssetsCopierDummySite.new
       Assets::copy_to_site(site)
       bundle, bundle_gz = site.static_files
       refute_nil bundle
