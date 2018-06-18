@@ -234,7 +234,7 @@ to your `renderJekyllPagesApiSearchResults` implementation script and
 layout](https://github.com/presidential-innovation-fellows/apps-gov/blob/master/_layouts/default.html)
 contains an example of setting the user interface options in concert with a [custom
 search results rendering
-script](https://github.com/presidential-innovation-fellows/apps-gov/blob/master/js/products.js):
+script](https://github.com/presidential-innovation-fellows/apps-gov/blob/master/assets/js/products.js):
 
 ```html
   </body>
