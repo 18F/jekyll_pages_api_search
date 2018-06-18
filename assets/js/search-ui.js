@@ -57,7 +57,6 @@ SearchUi.prototype.renderResults = function(query, results, renderResults) {
   if (results.length === 0) {
     this.createEmptyResultsMessage(query);
     this.inputElement.focus();
-    // return;
   }
   renderResults(query, results, this.doc, this.resultsElement);
 };
