@@ -36,10 +36,11 @@ module.exports = function() {
     return;
   }
 
-  return searchEngine.executeSearch(
-    window.JEKYLL_PAGES_API_SEARCH_BASEURL, window.location.href)
+
+  return searchEngine.executeSearch(window.JEKYLL_PAGES_API_SEARCH_BASEURL, window.location.href)
     .then(function(searchResults) {
-      searchUi.renderResults(searchResults.query, searchResults.results,
+      searchUi.renderResults(searchResults.query, 
+        searchResults.results || [],
         window.renderJekyllPagesApiSearchResults || writeResultsToList);
     })
     .catch(function(error) {
