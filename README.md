@@ -13,7 +13,7 @@ and loads asynchronously. These features ensure that the preparation of the
 search index does not introduce rendering latency in the browser.
 
 <figure>
-<img src='https://cloud.githubusercontent.com/assets/301547/13036790/489b5e50-d33f-11e5-9ba5-943bc6094650.gif' alt='Search demo' /><br/>
+<img src='https://user-images.githubusercontent.com/3905798/47585291-daf2d000-d92a-11e8-8e75-9246b06db3ce.gif' alt='Search demo' /><br/>
 <figcaption>Example of querying the search index and selecting from the search
 results page. The `/` key moves focus to the search query box, and the first
 result receives the tab index, making mouse-based navigation unnecessary.
@@ -325,11 +325,11 @@ end
 ## Releasing
 
 After following the steps from the [Developing section](#developing) to build
-and test the gem: 
+and test the gem:
 
 1. Ensure all changes for the release have already been merged all into the
    `master` branch.
-   
+
 1. Bump the version number by editing
    [`lib/jekyll_pages_api_search/version.rb`](lib/jekyll_pages_api_search/version.rb).
 
