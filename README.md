@@ -1,3 +1,9 @@
+# DEPRECATED
+
+This project is no longer maintained. For Federal sites, we recommend [search.gov](https://search.gov/).
+
+---
+
 ## jekyll_pages_api_search Plugin
 
 [![Build Status](https://travis-ci.org/18F/jekyll_pages_api_search.svg?branch=master)](https://travis-ci.org/18F/jekyll_pages_api_search)
